@@ -12,24 +12,26 @@ export default function App() {
 
   const menuItems: MenuItem[] = [
     { label: "Continue", action: () => console.log("Continue") },
+    { label: "Settings", action: () => console.log("Settings") },
     { label: "Fleeting Memories", action: () => console.log("Memories") },
-    { label: "System Config", action: () => console.log("Settings") },
     { label: "Backers", action: () => console.log("Backers") },
-    { label: "Exit Game", action: () => console.log("Exit") },
+    { label: "Exit", action: () => console.log("Exit") },
   ];
 
   return (
-    <main className="relative w-full h-screen overflow-hidden flex items-center font-sans">
+    <main className="relative w-full h-screen overflow-hidden font-sans">
       {/* Background Image */}
       <div
         className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat scale-105"
         style={{ backgroundImage: "url('/bg.png')" }}
       />
 
-      {/* Main UI */}
-      <div className="relative w-full max-w-7xl mx-auto px-10 md:px-0">
-        <header className="mb-20">
-          {/* REPLACED TITLE WITH LOGO IMAGE */}
+      {/* WRAPPER: Positioned Top-Left (absolute)
+          But uses flex-col + items-center to align children to each other
+      */}
+      <div className="absolute top-10 left-20 z-20 flex flex-col items-center">
+        {/* LOGO */}
+        <header className="mb-6">
           <img
             src="/logo.png"
             alt="Game Logo"
@@ -37,48 +39,11 @@ export default function App() {
           />
         </header>
 
-        {/* Navigation */}
+        {/* MENU: Center-aligned relative to the logo above */}
         <nav
-          className="relative flex flex-col w-fit"
+          className="flex flex-col items-center gap-3"
           onMouseLeave={() => setHoveredIndex(null)}
         >
-          {/* THE MASTER HIGHLIGHT BAR */}
-          <motion.div
-            className="absolute left-[-100px] z-0 pointer-events-none"
-            initial={false}
-            animate={{
-              opacity: hoveredIndex !== null ? 1 : 0,
-              y: hoveredIndex !== null ? hoveredIndex * 64 : 0,
-            }}
-            style={{
-              width: "150%",
-              height: "64px",
-              backgroundColor: "#d33a4f",
-              borderTop: "4px solid #000000",
-              borderBottom: "4px solid #000000",
-            }}
-            transition={{ type: "spring", stiffness: 400, damping: 35 }}
-          >
-            {/* White Gradient Fade */}
-            <div
-              className="absolute inset-0 z-0"
-              style={{
-                background:
-                  "linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.6) 25%, rgba(255,255,255,0.6) 75%, transparent 100%)",
-                mixBlendMode: "overlay",
-              }}
-            />
-            {/* Curved Swoosh Overlay */}
-            <div
-              className="absolute inset-0 opacity-40 bg-white"
-              style={{
-                clipPath: "polygon(10% 0%, 100% 0%, 90% 100%, 0% 100%)",
-                filter: "blur(20px)",
-                transform: "scaleX(0.8) translateX(10%)",
-              }}
-            />
-          </motion.div>
-
           {menuItems.map((item, index) => (
             <MenuButton
               key={item.label}
@@ -91,7 +56,8 @@ export default function App() {
         </nav>
       </div>
 
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_50%,transparent_0%,rgba(0,0,0,0.6)_100%)] pointer-events-none z-30" />
+      {/* Gradient Overlay focused on the top-left area */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_30%,transparent_0%,rgba(0,0,0,0.5)_100%)] pointer-events-none z-10" />
     </main>
   );
 }
