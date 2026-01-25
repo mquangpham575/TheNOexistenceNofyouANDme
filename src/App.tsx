@@ -7,6 +7,7 @@ interface MenuItem {
   action: () => void;
 }
 
+// Creates a jagged, "glitchy" shape for the screen distortion
 const generateSharpPath = () => {
   const points = [];
   const segments = 12;
@@ -32,19 +33,21 @@ export default function App() {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [distortionKey, setDistortionKey] = useState(0);
 
+  // Sets up the music and the glitch timer when the app starts
   useEffect(() => {
     const audio = new Audio("/menu_bgm.mp3");
     audio.loop = true;
     audio.volume = 0.4;
     audioRef.current = audio;
 
+    // Browsers block auto-playing audio; this starts music on the first click
     const startAudio = () => {
       audio.play().catch(() => {});
       window.removeEventListener("click", startAudio);
     };
     window.addEventListener("click", startAudio);
 
-    // Frequency: fires every 2000ms
+    // Triggers a screen glitch every 2 seconds
     const distortionInterval = setInterval(() => {
       setDistortionKey((prev) => prev + 1);
     }, 2000);
@@ -56,6 +59,7 @@ export default function App() {
     };
   }, []);
 
+  // Toggles the music on or off
   const toggleMute = () => {
     if (audioRef.current) {
       const newMutedState = !isMuted;
@@ -74,7 +78,9 @@ export default function App() {
 
   return (
     <main className="relative w-full h-screen overflow-hidden font-sans bg-black">
-      {/* 1. DISTORTION LAYER */}
+      {/* 1. DISTORTION LAYER
+          Creates random flickering shards that invert colors on the screen.
+      */}
       <AnimatePresence>
         <motion.div
           key={`sync-loss-${distortionKey}`}
@@ -101,9 +107,9 @@ export default function App() {
                 }}
                 initial={{ opacity: 0, x: -20 }}
                 animate={{
-                  opacity: [0, 1, 0],
-                  x: [-20, 20, 0],
-                  scaleY: [1, 2.5, 1],
+                  opacity: [0, 1, 0], // Quick flash
+                  x: [-20, 20, 0], // Quick shake
+                  scaleY: [1, 2.5, 1], // Quick stretch
                 }}
                 transition={{ duration: 0.4, ease: "easeInOut" }}
               />
@@ -112,7 +118,7 @@ export default function App() {
         </motion.div>
       </AnimatePresence>
 
-      {/* Background Image */}
+      {/* Background Image: Shakes and brightens when distortionKey changes */}
       <motion.div
         className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat scale-105"
         style={{ backgroundImage: "url('/bg.png')" }}
@@ -131,6 +137,7 @@ export default function App() {
         transition={{ duration: 0.15 }}
       />
 
+      {/* UI Layer: Logo and Menu Buttons */}
       <div className="absolute top-10 left-20 z-20 flex flex-col items-center">
         <header className="mb-6">
           <img
@@ -156,6 +163,7 @@ export default function App() {
         </nav>
       </div>
 
+      {/* Mute Button in the bottom corner */}
       <button
         onClick={toggleMute}
         className="absolute bottom-10 right-10 z-30 px-3 py-1 bg-black/40 border border-white/50 text-white text-xs font-bold uppercase tracking-widest hover:bg-white hover:text-black transition-all"
