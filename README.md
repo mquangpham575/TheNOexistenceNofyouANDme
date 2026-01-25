@@ -1,10 +1,10 @@
 # The NOexistenceN of you AND me Web App
 
+A "mostly functional" fan tribute to The NOexistenceN of you AND me, originally developed by Nino Games and 0x0Real Studio.
+
 <div align="center">
   <img src="public/readme_icon.gif" alt="alt text" />
 </div>
-
-A "mostly functional" fan tribute to The NOexistenceN of you AND me, originally developed by Nino Games and 0x0Real Studio.
 
 # Tech Stack
 
@@ -14,8 +14,12 @@ A "mostly functional" fan tribute to The NOexistenceN of you AND me, originally 
 
 ## Roadmap
 
-- [x] Menu item Squares: Make the UI menu.
-- [ ] Screen loader: Add a black for initial load, click to close it and show the web site.
+- [x] Real background for the true ending "Lilth exist".
+- [x] Icon and UI Menu.
+- [x] UI: Hover animations for Menu items.
+- [x] BGM: Main menu OST
+- [ ] Screen loader: Add a black for initial load, click to close it and show the web site. (to load the OST as well)
+- [ ] A page of the book -> book show the note.
 - [ ] Gallery: A place for all the "Fleeting Memories".
 - [ ] Settings: A volume slider for the BGM.
 
