@@ -27,11 +27,14 @@ export default function App() {
       />
 
       {/* Main UI */}
-      <div className="relative z-50 w-full max-w-7xl mx-auto px-10 md:px-0">
+      <div className="relative w-full max-w-7xl mx-auto px-10 md:px-0">
         <header className="mb-20">
-          <h1 className="text-6xl md:text-3xl font-black text-white ">
-            The NOexistenceN of you AND me
-          </h1>
+          {/* REPLACED TITLE WITH LOGO IMAGE */}
+          <img
+            src="/logo.png"
+            alt="Game Logo"
+            className="w-[300px] md:w-[500px] object-contain"
+          />
         </header>
 
         {/* Navigation */}
