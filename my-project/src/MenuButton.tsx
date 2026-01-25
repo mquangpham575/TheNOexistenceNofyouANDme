@@ -20,9 +20,13 @@ const MenuButton: React.FC<MenuButtonProps> = ({
     return Array.from({ length: count }).map((_, i) => ({
       id: Math.random(),
       top: 10 + Math.random() * 80,
-      width: 40 + Math.random() * 30, // Slightly wider for more presence
-      duration: 0.4 + Math.random() * 0.2,
-      delay: i * 0.04,
+      width: 40 + Math.random() * 40,
+      duration: 0.35 + Math.random() * 0.2,
+      delay: i * 0.03,
+      // Pick a primary "glitch" color for the distortion phase
+      glitchColor: ["#ff00ff", "#00ffff", "#00ff00", "#ff0000"][
+        Math.floor(Math.random() * 4)
+      ],
     }));
   }, [isHovered]);
 
@@ -30,7 +34,6 @@ const MenuButton: React.FC<MenuButtonProps> = ({
     <div
       onMouseEnter={onMouseEnter}
       onClick={onAction}
-      // REMOVED cursor-none so your custom cursor is always visible
       className="relative h-16 flex items-center justify-center z-10 min-w-95"
     >
       {/* 1. BORDER BACKGROUND */}
@@ -47,35 +50,46 @@ const MenuButton: React.FC<MenuButtonProps> = ({
         }}
       />
 
-      {/* 2. DASH LINES LAYER */}
+      {/* 2. COLORFUL FLICKER DASH LINES */}
       <div className="absolute inset-0 z-40 pointer-events-none overflow-hidden">
         <AnimatePresence>
           {isHovered &&
             dashLines.map((line) => (
               <motion.div
                 key={line.id}
-                initial={{ opacity: 0, x: "120%" }}
+                initial={{ opacity: 0, x: "120%", backgroundColor: "#000000" }}
                 animate={{
-                  // x: Starts Right, moves through Center, ends at far Left
                   x: ["120%", "20%", "-120%"],
-                  // opacity: Fades in quickly, stays bright while passing left, then out
                   opacity: [0, 1, 1, 0],
-                  scaleX: [2, 1, 1, 1.5],
+                  // Flickers from Black to Glitch Color to Black
+                  backgroundColor: [
+                    "#000000",
+                    line.glitchColor,
+                    "#ffffff",
+                    line.glitchColor,
+                    "#000000",
+                  ],
+                  // Rapid vertical jitter
+                  y: [0, -2, 2, -1, 0],
+                  scaleY: [1, 2, 0.5, 1.5, 1],
                 }}
                 exit={{ opacity: 0 }}
                 transition={{
                   duration: line.duration,
                   delay: line.delay,
-                  // times: Ensures it spends more time in the middle/left area
                   times: [0, 0.1, 0.8, 1],
                   ease: "easeOut",
+                  // Make the colors and jitter flicker faster than the movement
+                  backgroundColor: { duration: 0.1, repeat: Infinity },
+                  y: { duration: 0.1, repeat: Infinity },
                 }}
-                className="absolute bg-black"
+                className="absolute"
                 style={{
                   top: `${line.top}%`,
                   width: `${line.width}%`,
                   height: "3px",
                   filter: "blur(0.3px)",
+                  boxShadow: `0 0 8px ${line.glitchColor}66`, // Subtle color glow
                   clipPath:
                     "polygon(0% 10%, 20% 0%, 50% 30%, 80% 0%, 100% 10%, 100% 90%, 80% 100%, 50% 70%, 20% 100%, 0% 90%)",
                 }}
@@ -84,7 +98,7 @@ const MenuButton: React.FC<MenuButtonProps> = ({
         </AnimatePresence>
       </div>
 
-      {/* 3. DECORATIVE SQUARES (With Spin-In) */}
+      {/* 3. DECORATIVE SQUARES */}
       <AnimatePresence>
         {isHovered && (
           <>
