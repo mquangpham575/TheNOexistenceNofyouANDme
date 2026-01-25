@@ -18,9 +18,9 @@ const MenuButton: React.FC<MenuButtonProps> = ({
     <div
       onMouseEnter={onMouseEnter}
       onClick={onAction}
-      className="relative h-[64px] flex items-center justify-center z-10 min-w-[380px]"
+      className="relative h-16 flex items-center justify-center z-10 min-w-95"
     >
-      {/* --- PERSISTENT BORDER & HIGHLIGHT LAYER --- */}
+      {/* BORDER */}
       <motion.div
         className="absolute inset-0 z-0 pointer-events-none overflow-hidden"
         initial={false}
@@ -42,18 +42,17 @@ const MenuButton: React.FC<MenuButtonProps> = ({
       <AnimatePresence>
         {isHovered && (
           <>
-            {/* 1. Static/Spinning Black Square behind the Red one */}
+            {/* 1. Black Square */}
             <motion.div
               initial={{ scale: 0, rotate: 0 }}
               animate={{
                 scale: 1,
-                // We animate from 0 to 90, then hold at 90
                 rotate: [0, 90, 90],
               }}
               exit={{ scale: 0 }}
               transition={{
                 rotate: {
-                  duration: 2.1, // Total time for one "step" (0.1s move + 2s wait)
+                  duration: 2.1,
                   repeat: Infinity,
                   ease: "easeInOut",
                   times: [0, 0.047, 1],
@@ -63,7 +62,7 @@ const MenuButton: React.FC<MenuButtonProps> = ({
               className="absolute bottom-13 left-13 w-6 h-6 bg-black z-20 border-3 border-white"
             />
 
-            {/* 2. Red Square with Square Route Animation */}
+            {/* 2. Red Square */}
             <motion.div
               initial={{ scale: 0 }}
               animate={{
@@ -81,7 +80,7 @@ const MenuButton: React.FC<MenuButtonProps> = ({
               className="absolute top-0 left-5 w-9 h-9 bg-[#d33a4f] border-3 border-white z-30 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
             />
 
-            {/* 3. White Square with Square Route Animation */}
+            {/* 3. White Square */}
             <motion.div
               initial={{ scale: 0 }}
               animate={{

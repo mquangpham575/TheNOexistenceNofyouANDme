@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import { motion } from "framer-motion";
+import { useState } from "react";
 import MenuButton from "./MenuButton";
 
 interface MenuItem {
@@ -26,20 +25,18 @@ export default function App() {
         style={{ backgroundImage: "url('/bg.png')" }}
       />
 
-      {/* WRAPPER: Positioned Top-Left (absolute)
-          But uses flex-col + items-center to align children to each other
-      */}
+      {/* WRAPPER: Positioned Top-Left (absolute) */}
       <div className="absolute top-10 left-20 z-20 flex flex-col items-center">
         {/* LOGO */}
         <header className="mb-6">
           <img
             src="/logo.png"
             alt="Game Logo"
-            className="w-[300px] md:w-[500px] object-contain"
+            className="w-75 md:w-125 object-contain"
           />
         </header>
 
-        {/* MENU: Center-aligned relative to the logo above */}
+        {/* MENU */}
         <nav
           className="flex flex-col items-center gap-3"
           onMouseLeave={() => setHoveredIndex(null)}
@@ -56,7 +53,7 @@ export default function App() {
         </nav>
       </div>
 
-      {/* Gradient Overlay focused on the top-left area */}
+      {/* Gradient Overlay on the top-left area */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_30%,transparent_0%,rgba(0,0,0,0.5)_100%)] pointer-events-none z-10" />
     </main>
   );
