@@ -52,9 +52,6 @@ export default function App() {
           ))}
         </nav>
       </div>
-
-      {/* Gradient Overlay on the top-left area */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_30%,transparent_0%,rgba(0,0,0,0.5)_100%)] pointer-events-none z-10" />
     </main>
   );
 }
