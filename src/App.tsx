@@ -141,7 +141,7 @@ export default function App() {
         </header>
 
         <nav
-          className="flex flex-col items-center gap-5"
+          className="flex flex-col items-center gap-4"
           onMouseLeave={() => setHoveredIndex(null)}
         >
           {menuItems.map((item, index) => (
