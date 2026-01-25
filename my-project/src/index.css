@@ -22,3 +22,18 @@
   background-size: cover;
   background-position: center;
 }
+html,
+body {
+  cursor:
+    url("/cursor.png") 0 0,
+    auto;
+}
+
+button,
+a,
+[role="button"],
+.cursor-pointer {
+  cursor:
+    url("/cursor.png") 0 0,
+    pointer;
+}
