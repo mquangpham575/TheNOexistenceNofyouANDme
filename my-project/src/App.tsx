@@ -78,7 +78,7 @@ export default function App() {
       <AnimatePresence>
         <motion.div
           key={`sync-loss-${distortionKey}`}
-          className="absolute inset-0 z-[5] pointer-events-none"
+          className="absolute inset-0 z-5 pointer-events-none"
         >
           {[...Array(4)].map((_, i) => {
             const widthPercent = 5 + Math.random() * 30;
@@ -141,7 +141,7 @@ export default function App() {
         </header>
 
         <nav
-          className="flex flex-col items-center gap-3"
+          className="flex flex-col items-center gap-5"
           onMouseLeave={() => setHoveredIndex(null)}
         >
           {menuItems.map((item, index) => (

@@ -1,9 +1,7 @@
 @import "tailwindcss";
 
 @theme {
-  --font-game: "Archivo Black", sans-serif;
-  --font-title: "Oswald", sans-serif;
-  /* Define the background image here */
+  --font-title: "Bebas Neue", sans-serif;
   --image-bg-main: url("/bg.png");
 }
 
