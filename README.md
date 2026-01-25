@@ -1,4 +1,4 @@
-👁️ NOexistenceN
+# ![alt text](image.png)The NOexistenceN of you AND me Web App
 
 A "mostly functional" fan tribute to The NOexistenceN of you AND me, originally developed by Nino Games and 0x0Real Studio. Expect glitches, existential dread, and occasional screen tearing.
 
