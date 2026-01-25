@@ -1,0 +1,24 @@
+@import "tailwindcss";
+
+@theme {
+  --font-game: "Archivo Black", sans-serif;
+  --font-title: "Oswald", sans-serif;
+  /* Define the background image here */
+  --image-bg-main: url("/bg.png");
+}
+
+@layer base {
+  @import url("https://fonts.googleapis.com/css2?family=Archivo+Black&family=Oswald:wght@700&display=swap");
+}
+
+.bg-grain {
+  background-image: url("https://grainy-gradients.vercel.app/noise.svg");
+  filter: contrast(170%) brightness(100%);
+}
+
+/* Custom utility for the background image */
+.bg-game-main {
+  background-image: var(--image-bg-main);
+  background-size: cover;
+  background-position: center;
+}
