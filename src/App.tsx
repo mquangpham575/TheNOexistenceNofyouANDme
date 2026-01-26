@@ -10,7 +10,7 @@ interface MenuItem {
   action: () => void;
 }
 
-// Creates a jagged, "glitchy" shape for the screen distortion
+// Jagged shape
 const generateSharpPath = () => {
   const points = [];
   const segments = 12;
@@ -38,25 +38,25 @@ export default function App() {
   const [showSplash, setShowSplash] = useState(true);
   const [showSettings, setShowSettings] = useState(false);
   
-  // Transition State
+  // Transition
   const [curtainMode, setCurtainMode] = useState<"hidden" | "covering" | "exiting">("hidden");
   const [pendingAction, setPendingAction] = useState<"openSettings" | "closeSettings" | null>(null);
 
-  // Sets up the music and the glitch timer when the app starts
+  // Setup music & glitch
   useEffect(() => {
     const audio = new Audio("/menu_bgm.mp3");
     audio.loop = true;
     audio.volume = 0.4;
     audioRef.current = audio;
 
-    // Browsers block auto-playing audio; this starts music on the first click
+    // Auto-play workaround
     const startAudio = () => {
       audio.play().catch(() => {});
       window.removeEventListener("click", startAudio);
     };
     window.addEventListener("click", startAudio);
 
-    // Triggers a screen glitch every 2 seconds
+    // Glitch trigger
     const distortionInterval = setInterval(() => {
       setDistortionKey((prev) => prev + 1);
     }, 2000);
@@ -78,8 +78,7 @@ export default function App() {
   };
 
   const handleCurtainCovered = () => {
-    // If opening settings, we want the SettingsModal to take over the black screen
-    // so we hide the app curtain immediately once it's full black
+    // Settings modal logic
     if (pendingAction === "openSettings") {
       setShowSettings(true);
       setCurtainMode("hidden"); 
@@ -87,7 +86,7 @@ export default function App() {
       return;
     }
 
-    // Normal load simulation for other actions (or closing settings if we animated that)
+    // Simulation load
     setTimeout(() => {
       setCurtainMode("exiting");
       setPendingAction(null);
@@ -98,7 +97,7 @@ export default function App() {
     setCurtainMode("hidden");
   };
 
-  // Toggles the music on or off
+  // Toggle mute
   const toggleMute = () => {
     if (audioRef.current) {
       const newMutedState = !isMuted;
@@ -132,9 +131,7 @@ export default function App() {
             <SettingsModal onClose={handleSettingsClose} />
         )}
       </AnimatePresence>
-      {/* 1. DISTORTION LAYER
-          Creates random flickering shards that invert colors on the screen.
-      */}
+      {/* Distortion Layer */}
       <AnimatePresence>
         <motion.div
           key={`sync-loss-${distortionKey}`}
@@ -161,9 +158,9 @@ export default function App() {
                 }}
                 initial={{ opacity: 0, x: -20 }}
                 animate={{
-                  opacity: [0, 1, 0], // Quick flash
-                  x: [-20, 20, 0], // Quick shake
-                  scaleY: [1, 2.5, 1], // Quick stretch
+                  opacity: [0, 1, 0], // Flash
+                  x: [-20, 20, 0], // Shake
+                  scaleY: [1, 2.5, 1], // Stretch
                 }}
                 transition={{ duration: 0.4, ease: "easeInOut" }}
               />
@@ -172,7 +169,7 @@ export default function App() {
         </motion.div>
       </AnimatePresence>
 
-      {/* Background Image: Shakes and brightens when distortionKey changes */}
+      {/* Background Image */}
       <motion.div
         className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat scale-105"
         style={{ backgroundImage: "url('/bg.png')" }}
@@ -191,7 +188,7 @@ export default function App() {
         transition={{ duration: 0.15 }}
       />
 
-      {/* UI Layer: Logo and Menu Buttons */}
+      {/* UI Layer */}
       <div className="absolute top-10 left-20 z-20 flex flex-col items-center">
         <header className="mb-6">
           <img
@@ -218,7 +215,7 @@ export default function App() {
         </nav>
       </div>
 
-      {/* Mute Button in the bottom corner */}
+      {/* Mute Button */}
       <button
         onClick={toggleMute}
         className="absolute bottom-10 right-10 z-30 px-3 py-1 bg-black/40 border border-white/50 text-white text-xs font-bold uppercase tracking-widest hover:bg-white hover:text-black transition-all"

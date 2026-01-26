@@ -14,7 +14,7 @@
   filter: contrast(170%) brightness(100%);
 }
 
-/* Custom utility for the background image */
+/* Background Image */
 .bg-game-main {
   background-image: var(--image-bg-main);
   background-size: cover;

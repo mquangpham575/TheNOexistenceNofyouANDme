@@ -14,7 +14,7 @@ const MenuButton: React.FC<MenuButtonProps> = ({
   onMouseEnter,
   onAction,
 }) => {
-  // Generates random glitch lines when you hover
+  // Glitch lines
   const dashLines = useMemo(() => {
     if (!isHovered) return [];
     const count = Math.floor(Math.random() * 3) + 2;
@@ -36,7 +36,7 @@ const MenuButton: React.FC<MenuButtonProps> = ({
       onClick={onAction}
       className="relative h-16 flex items-center justify-center z-10 min-w-95"
     >
-      {/* Main top and bottom borders */}
+      {/* Borders */}
       <motion.div
         className="absolute inset-0 z-0 pointer-events-none overflow-hidden"
         style={{
@@ -50,7 +50,7 @@ const MenuButton: React.FC<MenuButtonProps> = ({
         }}
       />
 
-      {/* The colorful lines that fly across the button */}
+      {/* Lines */}
       <div className="absolute inset-0 z-40 pointer-events-none overflow-hidden">
         <AnimatePresence>
           {isHovered &&
@@ -95,11 +95,11 @@ const MenuButton: React.FC<MenuButtonProps> = ({
         </AnimatePresence>
       </div>
 
-      {/* Background shapes that appear on hover */}
+      {/* Hover Shapes */}
       <AnimatePresence>
         {isHovered && (
           <>
-            {/* Black square that swings left and right */}
+            {/* Black Square */}
             <motion.div
               initial={{ scale: 0, rotate: -90 }}
               animate={{
@@ -119,7 +119,7 @@ const MenuButton: React.FC<MenuButtonProps> = ({
               className="absolute bottom-13 left-13 w-6 h-6 bg-black z-20 border-3 border-white"
             />
 
-            {/* Red square moving in a small box pattern */}
+            {/* Red Square */}
             <motion.div
               initial={{ scale: 0, rotate: -90, opacity: 0 }}
               animate={{
@@ -138,7 +138,7 @@ const MenuButton: React.FC<MenuButtonProps> = ({
               className="absolute top-0 left-5 w-9 h-9 bg-[#d33a4f] border-3 border-white z-30 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
             />
 
-            {/* White square moving in a small box pattern */}
+            {/* White Square */}
             <motion.div
               initial={{ scale: 0, rotate: -90, opacity: 0 }}
               animate={{
@@ -160,7 +160,7 @@ const MenuButton: React.FC<MenuButtonProps> = ({
         )}
       </AnimatePresence>
 
-      {/* The text inside the button */}
+      {/* Text */}
       <motion.div
         animate={{
           color: isHovered ? "#FF959E" : "#000000",

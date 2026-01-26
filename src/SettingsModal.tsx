@@ -10,18 +10,13 @@ export default function SettingsModal({ onClose }: SettingsModalProps) {
   const [voiceLang, setVoiceLang] = useState("Japanese");
   const [textLang, setTextLang] = useState("English");
   
-  // Animation Sequence State
-  // init: Full black cover
-  // header: Header appears
-  // wiping: Red wipe starts
-  // show: Content revealed
+  // Animation Sequence
   const [stage, setStage] = useState<"init" | "header" | "wiping" | "show">("init");
 
   useEffect(() => {
-    // Sequence Timings
-    const t1 = setTimeout(() => setStage("header"), 500); // Wait a bit after mount (black screen)
-    const t2 = setTimeout(() => setStage("wiping"), 1200); // Header visible for 0.7s
-    const t3 = setTimeout(() => setStage("show"), 1800);   // Wipe finishes approx here
+    const t1 = setTimeout(() => setStage("header"), 500);
+    const t2 = setTimeout(() => setStage("wiping"), 1200);
+    const t3 = setTimeout(() => setStage("show"), 1800);
 
     return () => {
       clearTimeout(t1);
@@ -30,7 +25,7 @@ export default function SettingsModal({ onClose }: SettingsModalProps) {
     };
   }, []);
 
-  // Reusable Range Slider Component
+  // Slider Row
   const SliderRow = ({ label, showMute = false }: { label: string; showMute?: boolean }) => {
     const [value, setValue] = useState(75);
 
@@ -61,7 +56,7 @@ export default function SettingsModal({ onClose }: SettingsModalProps) {
     );
   };
 
-  // Reusable Selector Component
+  // Selector Row
   const SelectorRow = ({
     label,
     options,
@@ -96,7 +91,7 @@ export default function SettingsModal({ onClose }: SettingsModalProps) {
     <motion.div
       className="fixed inset-0 z-50 flex items-center justify-center bg-cover bg-center select-none"
       style={{ backgroundImage: "url('/bg.png')" }}
-      initial={{ opacity: 1 }} // We handle entry animation internally
+      initial={{ opacity: 1 }}
       exit={{ opacity: 0 }}
     >
       <div className="absolute inset-0 bg-black/80" />
@@ -117,26 +112,24 @@ export default function SettingsModal({ onClose }: SettingsModalProps) {
 
       <div className="relative w-full h-full max-w-[90%] border-none py-10 px-16 overflow-hidden flex flex-col z-10">
          
-         {/* BLACK COVER LAYER (Covers content until wipe) */}
+         {/* Black Cover */}
          <AnimatePresence>
             {stage !== "show" && (
                 <motion.div 
                     className="absolute inset-0 bg-black z-50 flex flex-col"
                     initial={{ opacity: 1 }}
-                    exit={{ y: "100%", transition: { duration: 0.8, ease: "easeInOut" } }} // This is the wipe effect (revealing content below)
+                    exit={{ y: "100%", transition: { duration: 0.8, ease: "easeInOut" } }}
                 >
-                    {/* Header Placeholder in Black Layer for continuity? No, header sits ON TOP of cover. */}
-                    {/* Actually, if we want Red Wipe from header line, the Red div should be here inside the cover or on top. */}
                 </motion.div>
             )}
          </AnimatePresence>
 
-         {/* RED WIPE LAYER */}
+         {/* Red Wipe */}
          <AnimatePresence>
             {stage === "wiping" && (
                 <motion.div
                     className="absolute left-0 right-0 h-screen bg-[#DB404A] z-40"
-                    style={{ top: "150px" }} // Approximate header height (adjusted)
+                    style={{ top: "150px" }}
                     initial={{ height: "0%" }}
                     animate={{ height: "100%" }}
                     exit={{ opacity: 0 }}
@@ -146,7 +139,7 @@ export default function SettingsModal({ onClose }: SettingsModalProps) {
          </AnimatePresence>
 
 
-        {/* Header - Always visible once 'header' stage reached */}
+        {/* Header */}
         <motion.div 
             className="flex items-end justify-center border-b-4 border-white pb-6 mb-4 relative z-60"
             initial={{ opacity: 0, y: -20 }}
@@ -179,7 +172,7 @@ export default function SettingsModal({ onClose }: SettingsModalProps) {
             Let's Customize Our World!?
         </motion.div>
 
-        {/* Content - Revealed by wipe */}
+        {/* Content */}
         <div className="relative z-10 px-4 flex flex-col justify-start pb-5">
           <SelectorRow
             label="Display Mode"
