@@ -1,7 +1,9 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import MenuButton from "./MenuButton";
 import SplashScreen from "./SplashScreen";
+import SettingsModal from "./SettingsModal";
+import TransitionCurtain from "./TransitionCurtain";
 
 interface MenuItem {
   label: string;
@@ -34,6 +36,11 @@ export default function App() {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [distortionKey, setDistortionKey] = useState(0);
   const [showSplash, setShowSplash] = useState(true);
+  const [showSettings, setShowSettings] = useState(false);
+  
+  // Transition State
+  const [curtainMode, setCurtainMode] = useState<"hidden" | "covering" | "exiting">("hidden");
+  const [pendingAction, setPendingAction] = useState<"openSettings" | "closeSettings" | null>(null);
 
   // Sets up the music and the glitch timer when the app starts
   useEffect(() => {
@@ -61,6 +68,36 @@ export default function App() {
     };
   }, []);
 
+  const handleSettingsOpen = () => {
+    setPendingAction("openSettings");
+    setCurtainMode("covering");
+  };
+
+  const handleSettingsClose = () => {
+    setShowSettings(false);
+  };
+
+  const handleCurtainCovered = () => {
+    // If opening settings, we want the SettingsModal to take over the black screen
+    // so we hide the app curtain immediately once it's full black
+    if (pendingAction === "openSettings") {
+      setShowSettings(true);
+      setCurtainMode("hidden"); 
+      setPendingAction(null);
+      return;
+    }
+
+    // Normal load simulation for other actions (or closing settings if we animated that)
+    setTimeout(() => {
+      setCurtainMode("exiting");
+      setPendingAction(null);
+    }, 400); 
+  };
+
+  const handleCurtainComplete = () => {
+    setCurtainMode("hidden");
+  };
+
   // Toggles the music on or off
   const toggleMute = () => {
     if (audioRef.current) {
@@ -72,7 +109,7 @@ export default function App() {
 
   const menuItems: MenuItem[] = [
     { label: "Continue", action: () => console.log("Continue") },
-    { label: "Settings", action: () => console.log("Settings") },
+    { label: "Settings", action: handleSettingsOpen },
     { label: "Fleeting Memories", action: () => console.log("Memories") },
     { label: "Backers", action: () => console.log("Backers") },
     { label: "Exit", action: () => console.log("Exit") },
@@ -80,9 +117,19 @@ export default function App() {
 
   return (
     <main className="relative w-full h-screen overflow-hidden font-sans bg-black">
+      {/* Transition Curtain */}
+      <TransitionCurtain 
+        mode={curtainMode} 
+        onCovered={handleCurtainCovered} 
+        onComplete={handleCurtainComplete} 
+      />
+
       <AnimatePresence>
         {showSplash && (
           <SplashScreen onComplete={() => setShowSplash(false)} />
+        )}
+        {showSettings && (
+            <SettingsModal onClose={handleSettingsClose} />
         )}
       </AnimatePresence>
       {/* 1. DISTORTION LAYER
