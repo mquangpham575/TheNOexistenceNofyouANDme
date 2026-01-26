@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 
 interface SettingsModalProps {
@@ -10,6 +10,22 @@ export default function SettingsModal({ onClose }: SettingsModalProps) {
   const [voiceLang, setVoiceLang] = useState("Japanese");
   const [textLang, setTextLang] = useState("English");
   
+  const [showBottomCurtains, setShowBottomCurtains] = useState(false);
+
+  useEffect(() => {
+    const minDelay = new Promise((resolve) => setTimeout(resolve, 1000));
+    const imgLoad = new Promise((resolve) => {
+      const img = new Image();
+      img.src = "/bg.png";
+      if (img.complete) resolve(null);
+      else img.onload = () => resolve(null);
+    });
+
+    Promise.all([minDelay, imgLoad]).then(() => {
+      setShowBottomCurtains(true);
+    });
+  }, []);
+
   // Slider Row
   const SliderRow = ({ label, showMute = false }: { label: string; showMute?: boolean }) => {
     const [value, setValue] = useState(75);
@@ -26,7 +42,7 @@ export default function SettingsModal({ onClose }: SettingsModalProps) {
             onChange={(e) => setValue(Number(e.target.value))}
             className="w-full h-9 bg-gray-600 rounded-lg appearance-none cursor-pointer setting-slider"
             style={{
-                background: `linear-gradient(to right, white ${value}%, #9ca3af ${value}%)`
+                background: `linear-gradient(to right, white ${value}%, #979797 ${value}%)`
             }}
           />
         </div>
@@ -82,15 +98,15 @@ export default function SettingsModal({ onClose }: SettingsModalProps) {
       <div className="absolute inset-0 bg-black/80" />
       <style>{`
         .setting-slider::-moz-range-thumb {
-            width: 14px;
-            height: 36px;
+            width: 16px;
+            height: 38px;
             background: black;
-            border: 2px solid #979797;
-            border-radius: 4px;
+            border: 3px solid #A9A9A9;
+            border-radius: 5px;
             transition: border-color 0.2s;
         }
         .setting-slider:hover::-moz-range-thumb {
-            border-color: #e5e7eb;
+            border-color: #DDDDDD;
         }
       `}</style>
 
@@ -124,9 +140,9 @@ export default function SettingsModal({ onClose }: SettingsModalProps) {
                 className="absolute left-1/2 top-full w-[150vw] h-[150vh] bg-black pointer-events-none"
                 style={{ translateX: "-50%", zIndex: 120 }}
                 initial={{ y: "0%" }}
-                animate={{ y: "100%" }}
+                animate={showBottomCurtains ? { y: "100%" } : { y: "0%" }}
                 exit={{ y: "0%" }}
-                transition={{ duration: 0.7, ease: [0.33, 1, 0.68, 1], delay: 1.0 }}
+                transition={{ duration: 0.7, ease: [0.33, 1, 0.68, 1] }}
             />
 
             {/* Bottom Pink Curtain - Moves to reveal Content */}
@@ -134,9 +150,9 @@ export default function SettingsModal({ onClose }: SettingsModalProps) {
                 className="absolute left-1/2 top-full w-[150vw] h-[150vh] bg-[#FF959E] pointer-events-none"
                 style={{ translateX: "-50%", zIndex: 115 }}
                 initial={{ y: "0%" }}
-                animate={{ y: "100%" }}
+                animate={showBottomCurtains ? { y: "100%" } : { y: "0%" }}
                 exit={{ y: "0%" }}
-                transition={{ duration: 0.8, ease: [0.33, 1, 0.68, 1], delay: 1.15 }}
+                transition={{ duration: 0.8, ease: [0.33, 1, 0.68, 1], delay: 0.15 }}
             />
 
             {/* Actual Header Content */}
@@ -145,13 +161,13 @@ export default function SettingsModal({ onClose }: SettingsModalProps) {
                 initial={{ opacity: 1 }}
                 // No extra animation, static reveal by curtain
             >
-            <h2 className="text-6xl font-bold text-white tracking-wider flex items-baseline gap-6">
+            <h2 className="text-6xl font-bold text-white tracking-wider flex items-baseline gap-10">
                 <span className="text-[#DB404A] relative inline-block px-2 text-7xl">
                     <span className="absolute -left-9 top-1 text-[#DB404A] text-5xl">「</span>
                     YOUR
                     <span className="absolute -right-10 bottom-1 text-[#DB404A] text-5xl">」</span>
                 </span>
-                <span>Settings</span>
+                <span className="text-5xl">Settings</span>
             </h2>
             <button
                 onClick={onClose}
@@ -163,7 +179,7 @@ export default function SettingsModal({ onClose }: SettingsModalProps) {
         </div>
 
         {/* Subtitle */}
-        <div className="text-lg italic text-white bold text-center mb-5 mt-3 relative z-[105]">
+        <div className="text-lg italic text-white font-bold text-center mb-5 mt-3 relative z-[105]">
             Let's Customize Our World!?
         </div>
 
