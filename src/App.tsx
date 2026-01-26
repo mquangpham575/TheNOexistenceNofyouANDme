@@ -80,9 +80,11 @@ export default function App() {
   const handleCurtainCovered = () => {
     // Settings modal logic
     if (pendingAction === "openSettings") {
-      setShowSettings(true);
-      setCurtainMode("hidden"); 
-      setPendingAction(null);
+      setTimeout(() => {
+        setShowSettings(true);
+        setCurtainMode("hidden"); 
+        setPendingAction(null);
+      }, 500);
       return;
     }
 

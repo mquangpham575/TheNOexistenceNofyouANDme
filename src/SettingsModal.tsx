@@ -77,7 +77,7 @@ export default function SettingsModal({ onClose }: SettingsModalProps) {
       className="fixed inset-0 z-50 flex items-center justify-center bg-cover bg-center select-none"
       style={{ backgroundImage: "url('/bg.png')" }}
       initial={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
+      exit={{ opacity: 0, pointerEvents: "none" }}
     >
       <div className="absolute inset-0 bg-black/80" />
       <style>{`
@@ -126,7 +126,7 @@ export default function SettingsModal({ onClose }: SettingsModalProps) {
                 initial={{ y: "0%" }}
                 animate={{ y: "100%" }}
                 exit={{ y: "0%" }}
-                transition={{ duration: 0.7, ease: [0.33, 1, 0.68, 1], delay: 1.25 }}
+                transition={{ duration: 0.7, ease: [0.33, 1, 0.68, 1], delay: 1.0 }}
             />
 
             {/* Bottom Pink Curtain - Moves to reveal Content */}
@@ -136,7 +136,7 @@ export default function SettingsModal({ onClose }: SettingsModalProps) {
                 initial={{ y: "0%" }}
                 animate={{ y: "100%" }}
                 exit={{ y: "0%" }}
-                transition={{ duration: 0.8, ease: [0.33, 1, 0.68, 1], delay: 1.4 }}
+                transition={{ duration: 0.8, ease: [0.33, 1, 0.68, 1], delay: 1.15 }}
             />
 
             {/* Actual Header Content */}
