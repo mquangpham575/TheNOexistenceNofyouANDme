@@ -21,6 +21,7 @@ A "mostly functional" fan tribute to The NOexistenceN of you AND me, originally 
 - [x] Screen loader: Add a black for initial load, click to close it and show the web site. (to load the OST as well)
 - [x] Settings: UI for settings.
 - [x] Settings: Transistions to show up and close the settings.
+- [x] Settings: dialog for each settings.
 - [ ] Settings: Make its setting functional.
 - [ ] A page of the book -> book show the note.
 - [ ] Gallery: A place for all the "Fleeting Memories".
