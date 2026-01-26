@@ -179,12 +179,12 @@ export default function SettingsModal({ onClose }: SettingsModalProps) {
         </div>
 
         {/* Subtitle */}
-        <div className="text-lg italic text-white font-bold text-center mb-5 mt-3 relative z-[105]">
+        <div className="text-lg italic text-white font-bold text-center mb-5 mt-3 relative z-105">
             Let's Customize Our World!?
         </div>
 
         {/* Content */}
-        <div className="relative z-[105] px-4 flex flex-col justify-start pb-5">
+        <div className="relative z-105 px-4 flex flex-col justify-start pb-5">
           <SelectorRow
             label="Display Mode"
             options={["Windowed", "Fullscreen", "Borderless"]}

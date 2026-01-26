@@ -31,13 +31,13 @@ export default function SplashScreen({ onComplete }: SplashScreenProps) {
 
   return (
     <motion.div
-      className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-black cursor-pointer select-none"
+      className="fixed inset-0 z-9999 flex flex-col items-center justify-center bg-black cursor-pointer select-none"
       initial={{ y: 0 }}
       exit={{ y: "-100%", transition: { duration: 0.8, ease: "easeInOut" } }}
       onClick={handleClick}
     >
-      <div className="text-white font-[Segoe UI,Tahoma,Geneva,Verdana,sans-serif] tracking-[2px] uppercase text-[0.8rem] animate-pulse">
-        {isLoading ? "Loading please wait..." : "Welcome"}
+      <div className=" text-white font-[Segoe UI,Tahoma,Geneva,Verdana,sans-serif] tracking-[2px] uppercase text-6xl animate-pulse">
+        {isLoading ? "Loading..." : "Welcome"}
       </div>
     </motion.div>
   );
