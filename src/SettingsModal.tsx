@@ -37,24 +37,26 @@ export default function SettingsModal({ onClose }: SettingsModalProps) {
     return (
       <div className="flex justify-between mb-3 p-1 ">
         <span className="text-white text-3xl font-bold w-56 text-right mr-12">{label}</span>
-        <div className="flex-1 flex items-center pr-44">
+        <div className="flex-1 flex items-center pr-32">
           <input
             type="range"
             min="0"
             max="100"
             value={value}
             onChange={(e) => setValue(Number(e.target.value))}
-            className="w-full h-8 bg-gray-600 rounded-lg appearance-none cursor-pointer"
+            className="w-full h-8 bg-gray-600 rounded-lg appearance-none cursor-pointer setting-slider"
             style={{
-                background: `linear-gradient(to right, white ${value}%, #4b5563 ${value}%)`
+                background: `linear-gradient(to right, white ${value}%, #9ca3af ${value}%)`
             }}
           />
         </div>
+        <div className="w-24 flex justify-end items-center">
         {showMute && (
-        <button className="text-white text-3xl font-bold w-20 text-right hover:text-[#FF959E] transition-colors">
+        <button className="text-white text-3xl font-bold text-right hover:text-[#FF959E] transition-colors">
             Mute
           </button>
         )}
+        </div>
       </div>
     );
   };
@@ -98,6 +100,34 @@ export default function SettingsModal({ onClose }: SettingsModalProps) {
       exit={{ opacity: 0 }}
     >
       <div className="absolute inset-0 bg-black/80" />
+      <style>{`
+        .setting-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 14px;
+            height: 32px;
+            background: black;
+            border: 2px solid #9ca3af; /* gray-400 */
+            border-radius: 2px;
+            cursor: pointer;
+            transition: border-color 0.2s;
+        }
+        .setting-slider:hover::-webkit-slider-thumb {
+            border-color: #e5e7eb; /* gray-200 */
+        }
+        .setting-slider::-moz-range-thumb {
+            width: 14px;
+            height: 32px;
+            background: black;
+            border: 2px solid #9ca3af;
+            border-radius: 2px;
+            cursor: pointer;
+            transition: border-color 0.2s;
+        }
+        .setting-slider:hover::-moz-range-thumb {
+            border-color: #e5e7eb;
+        }
+      `}</style>
 
       <div className="relative w-full h-full max-w-[90%] border-none py-10 px-16 overflow-hidden flex flex-col z-10">
          
@@ -155,7 +185,7 @@ export default function SettingsModal({ onClose }: SettingsModalProps) {
 
         {/* Subtitle */}
         <motion.div 
-            className="text-lg italic text-white bold text-center mb-10 relative z-10"
+            className="text-lg italic text-white bold text-center mb-5 relative z-10"
             initial={{ opacity: 0 }}
             animate={stage === "show" ? { opacity: 1 } : {}}
             transition={{ delay: 0.2 }}
@@ -164,7 +194,7 @@ export default function SettingsModal({ onClose }: SettingsModalProps) {
         </motion.div>
 
         {/* Content - Revealed by wipe */}
-        <div className="relative z-10 px-4 flex-1 flex flex-col justify-center">
+        <div className="relative z-10 px-4 flex-1 flex flex-col justify-start">
           <SelectorRow
             label="Display Mode"
             options={["Windowed", "Fullscreen", "Borderless"]}
@@ -193,7 +223,7 @@ export default function SettingsModal({ onClose }: SettingsModalProps) {
         </div>
 
         {/* Footer */}
-        <div className="flex justify-center relative z-10">
+        <div className="flex justify-center ">
              <button className="text-5xl font-bold text-white hover:text-[#FF959E] transition-colors tracking-widest">
                  Reset
              </button>
