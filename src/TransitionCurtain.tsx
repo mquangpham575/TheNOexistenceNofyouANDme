@@ -15,7 +15,7 @@ export default function TransitionCurtain({ mode, onCovered, onComplete }: Trans
 
   return (
     <motion.div
-      className="fixed inset-0 z-[99999] bg-black"
+      className="fixed inset-0 z-99999 bg-black"
       initial="hidden"
       animate={mode}
       variants={variants}

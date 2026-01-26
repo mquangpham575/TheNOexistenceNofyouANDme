@@ -36,15 +36,15 @@ export default function SettingsModal({ onClose }: SettingsModalProps) {
 
     return (
       <div className="flex justify-between mb-3 p-1 ">
-        <span className="text-white text-3xl font-bold w-56 text-right mr-12">{label}</span>
-        <div className="flex-1 flex items-center pr-32">
+        <span className="text-white text-3xl font-bold w-56 text-right mr-20">{label}</span>
+        <div className="flex-1 flex items-center pr-25">
           <input
             type="range"
             min="0"
             max="100"
             value={value}
             onChange={(e) => setValue(Number(e.target.value))}
-            className="w-full h-8 bg-gray-600 rounded-lg appearance-none cursor-pointer setting-slider"
+            className="w-full h-9 bg-gray-600 rounded-lg appearance-none cursor-pointer setting-slider"
             style={{
                 background: `linear-gradient(to right, white ${value}%, #9ca3af ${value}%)`
             }}
@@ -52,7 +52,7 @@ export default function SettingsModal({ onClose }: SettingsModalProps) {
         </div>
         <div className="w-24 flex justify-end items-center">
         {showMute && (
-        <button className="text-white text-3xl font-bold text-right hover:text-[#FF959E] transition-colors">
+        <button className="text-white text-3xl font-bold text-right hover:text-[#FF959E] transition-colors pr-15">
             Mute
           </button>
         )}
@@ -74,7 +74,7 @@ export default function SettingsModal({ onClose }: SettingsModalProps) {
     onSelect: (val: string) => void;
   }) => (
     <div className="flex items-center justify-between mb-3 p-1 transition-colors">
-      <span className="text-white text-3xl w-56 font-bold text-right mr-12">{label}</span>
+      <span className="text-white text-3xl w-56 font-bold text-right mr-20">{label}</span>
       <div className="flex-1 flex gap-8 text-white text-3xl font-bold">
         {options.map((opt) => (
           <button
@@ -84,7 +84,7 @@ export default function SettingsModal({ onClose }: SettingsModalProps) {
               selected === opt ? "text-white hover:text-[#FF959E]" : "text-white hover:text-[#FF959E]"
             }`}
           >
-             {selected === opt && <span className="w-3.5 h-8 bg-white rounded-xs mr-2 inline-block"></span>}
+             {selected === opt && <span className="w-3.5 h-8 bg-white rounded-sm mr-2 inline-block"></span>}
              {opt}
           </button>
         ))}
@@ -94,34 +94,20 @@ export default function SettingsModal({ onClose }: SettingsModalProps) {
 
   return (
     <motion.div
-      className="fixed inset-0 z-[50] flex items-center justify-center bg-cover bg-center select-none"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-cover bg-center select-none"
       style={{ backgroundImage: "url('/bg.png')" }}
       initial={{ opacity: 1 }} // We handle entry animation internally
       exit={{ opacity: 0 }}
     >
       <div className="absolute inset-0 bg-black/80" />
       <style>{`
-        .setting-slider::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 14px;
-            height: 32px;
-            background: black;
-            border: 2px solid #9ca3af; /* gray-400 */
-            border-radius: 2px;
-            cursor: pointer;
-            transition: border-color 0.2s;
-        }
-        .setting-slider:hover::-webkit-slider-thumb {
-            border-color: #e5e7eb; /* gray-200 */
-        }
+
         .setting-slider::-moz-range-thumb {
             width: 14px;
-            height: 32px;
+            height: 36px;
             background: black;
-            border: 2px solid #9ca3af;
-            border-radius: 2px;
-            cursor: pointer;
+            border: 2px solid #979797;
+            border-radius: 4px;
             transition: border-color 0.2s;
         }
         .setting-slider:hover::-moz-range-thumb {
@@ -162,22 +148,22 @@ export default function SettingsModal({ onClose }: SettingsModalProps) {
 
         {/* Header - Always visible once 'header' stage reached */}
         <motion.div 
-            className="flex items-end justify-center border-b-4 border-white pb-4 mb-8 relative z-[60]"
+            className="flex items-end justify-center border-b-4 border-white pb-6 mb-4 relative z-60"
             initial={{ opacity: 0, y: -20 }}
             animate={stage !== "init" ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.5 }}
         >
           <h2 className="text-6xl font-bold text-white tracking-wider flex items-baseline gap-6">
             <span className="text-[#DB404A] relative inline-block px-2 text-7xl">
-                <span className="absolute -left-8 -top-3 text-[#DB404A] text-5xl">「</span>
+                <span className="absolute -left-9 top-1 text-[#DB404A] text-5xl">「</span>
                 YOUR
-                <span className="absolute -right-8 -bottom-3 text-[#DB404A] text-5xl">」</span>
+                <span className="absolute -right-10 bottom-1 text-[#DB404A] text-5xl">」</span>
             </span>
             <span>Settings</span>
           </h2>
           <button
             onClick={onClose}
-            className="absolute right-0 bottom-3 text-3xl font-bold text-white hover:text-[#FF959E] transition-colors"
+            className="absolute right-0 bottom-6 text-3xl font-bold text-white hover:text-[#FF959E] transition-colors"
           >
             Return
           </button>
@@ -194,7 +180,7 @@ export default function SettingsModal({ onClose }: SettingsModalProps) {
         </motion.div>
 
         {/* Content - Revealed by wipe */}
-        <div className="relative z-10 px-4 flex-1 flex flex-col justify-start">
+        <div className="relative z-10 px-4 flex flex-col justify-start pb-5">
           <SelectorRow
             label="Display Mode"
             options={["Windowed", "Fullscreen", "Borderless"]}
@@ -224,7 +210,7 @@ export default function SettingsModal({ onClose }: SettingsModalProps) {
 
         {/* Footer */}
         <div className="flex justify-center ">
-             <button className="text-5xl font-bold text-white hover:text-[#FF959E] transition-colors tracking-widest">
+             <button className="text-4xl font-bold text-white hover:text-[#FF959E] transition-colors tracking-widest">
                  Reset
              </button>
         </div>
