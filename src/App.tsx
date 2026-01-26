@@ -4,31 +4,13 @@ import MenuButton from "./MenuButton";
 import SplashScreen from "./SplashScreen";
 import SettingsModal from "./SettingsModal";
 import TransitionCurtain from "./TransitionCurtain";
+import GlitchOverlay from "./GlitchOverlay";
 
 interface MenuItem {
   label: string;
   action: () => void;
 }
 
-// Jagged shape
-const generateSharpPath = () => {
-  const points = [];
-  const segments = 12;
-  points.push("0% 20%");
-  for (let j = 1; j < segments; j++) {
-    const x = (j / segments) * 100;
-    const y = Math.random() * 40;
-    points.push(`${x}% ${y}%`);
-  }
-  points.push("100% 20%", "100% 80%");
-  for (let j = segments - 1; j > 0; j--) {
-    const x = (j / segments) * 100;
-    const y = 60 + Math.random() * 40;
-    points.push(`${x}% ${y}%`);
-  }
-  points.push("0% 80%");
-  return `polygon(${points.join(",")})`;
-};
 
 export default function App() {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
@@ -59,7 +41,7 @@ export default function App() {
     // Glitch trigger
     const distortionInterval = setInterval(() => {
       setDistortionKey((prev) => prev + 1);
-    }, 2000);
+    }, 3500);
 
     return () => {
       audio.pause();
@@ -134,42 +116,8 @@ export default function App() {
         )}
       </AnimatePresence>
       {/* Distortion Layer */}
-      <AnimatePresence>
-        <motion.div
-          key={`sync-loss-${distortionKey}`}
-          className="absolute inset-0 z-5 pointer-events-none"
-        >
-          {[...Array(4)].map((_, i) => {
-            const widthPercent = 5 + Math.random() * 30;
-            return (
-              <motion.div
-                key={i}
-                className="absolute"
-                style={{
-                  top: `${Math.random() * 100}%`,
-                  left: `${Math.random() * (100 - widthPercent)}%`,
-                  width: `${widthPercent}%`,
-                  height: `${2 + Math.random() * 12}px`,
-                  clipPath: generateSharpPath(),
-                  backdropFilter:
-                    "invert(1) saturate(200%) hue-rotate(180deg) blur(1px)",
-                  WebkitBackdropFilter:
-                    "invert(1) saturate(200%) hue-rotate(180deg) blur(1px)",
-                  mixBlendMode: "difference",
-                  backgroundColor: "rgba(255, 255, 255, 0.2)",
-                }}
-                initial={{ opacity: 0, x: -20 }}
-                animate={{
-                  opacity: [0, 1, 0], // Flash
-                  x: [-20, 20, 0], // Shake
-                  scaleY: [1, 2.5, 1], // Stretch
-                }}
-                transition={{ duration: 0.4, ease: "easeInOut" }}
-              />
-            );
-          })}
-        </motion.div>
-      </AnimatePresence>
+      {/* Distortion Layer */}
+      <GlitchOverlay manualTrigger={distortionKey} zIndex={5} />
 
       {/* Background Image */}
       <motion.div

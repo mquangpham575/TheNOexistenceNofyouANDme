@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import GlitchOverlay from "./GlitchOverlay";
 
 interface SettingsModalProps {
   onClose: () => void;
@@ -96,6 +97,7 @@ export default function SettingsModal({ onClose }: SettingsModalProps) {
       exit={{ opacity: 0, pointerEvents: "none" }}
     >
       <div className="absolute inset-0 bg-black/80" />
+      <GlitchOverlay zIndex={5} /> 
       <style>{`
         .setting-slider::-moz-range-thumb {
             width: 16px;
