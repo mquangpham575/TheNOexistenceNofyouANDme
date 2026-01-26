@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useState } from "react";
+import { motion } from "framer-motion";
 
 interface SettingsModalProps {
   onClose: () => void;
@@ -10,21 +10,6 @@ export default function SettingsModal({ onClose }: SettingsModalProps) {
   const [voiceLang, setVoiceLang] = useState("Japanese");
   const [textLang, setTextLang] = useState("English");
   
-  // Animation Sequence
-  const [stage, setStage] = useState<"init" | "header" | "wiping" | "show">("init");
-
-  useEffect(() => {
-    const t1 = setTimeout(() => setStage("header"), 500);
-    const t2 = setTimeout(() => setStage("wiping"), 1200);
-    const t3 = setTimeout(() => setStage("show"), 1800);
-
-    return () => {
-      clearTimeout(t1);
-      clearTimeout(t2);
-      clearTimeout(t3);
-    };
-  }, []);
-
   // Slider Row
   const SliderRow = ({ label, showMute = false }: { label: string; showMute?: boolean }) => {
     const [value, setValue] = useState(75);
@@ -96,7 +81,6 @@ export default function SettingsModal({ onClose }: SettingsModalProps) {
     >
       <div className="absolute inset-0 bg-black/80" />
       <style>{`
-
         .setting-slider::-moz-range-thumb {
             width: 14px;
             height: 36px;
@@ -110,70 +94,81 @@ export default function SettingsModal({ onClose }: SettingsModalProps) {
         }
       `}</style>
 
-      <div className="relative w-full h-full max-w-[90%] border-none py-10 px-16 overflow-hidden flex flex-col z-10">
+      {/* Main Container */}
+      <div className="relative w-full h-full max-w-[90%] border-none py-10 px-16 flex flex-col z-10">
          
-         {/* Black Cover */}
-         <AnimatePresence>
-            {stage !== "show" && (
-                <motion.div 
-                    className="absolute inset-0 bg-black z-50 flex flex-col"
-                    initial={{ opacity: 1 }}
-                    exit={{ y: "100%", transition: { duration: 0.8, ease: "easeInOut" } }}
-                >
-                </motion.div>
-            )}
-         </AnimatePresence>
+        {/* Header containing the anchor */}
+        <div className="relative">
+            {/* Top Curtain - Anchored to bottom of header line */}
+            <motion.div
+                className="absolute left-1/2 bottom-0 w-[150vw] h-[150vh] bg-black pointer-events-none"
+                style={{ translateX: "-50%", zIndex: 102 }}
+                initial={{ y: "0%" }}
+                animate={{ y: "100%", transitionEnd: { opacity: 0 } }}
+                exit={{ y: "0%", opacity: 1, zIndex: 102 }}
+                transition={{ duration: 0.7, ease: [0.33, 1, 0.68, 1] }}
+            />
 
-         {/* Red Wipe */}
-         <AnimatePresence>
-            {stage === "wiping" && (
-                <motion.div
-                    className="absolute left-0 right-0 h-screen bg-[#DB404A] z-40"
-                    style={{ top: "150px" }}
-                    initial={{ height: "0%" }}
-                    animate={{ height: "100%" }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.6, ease: "easeInOut" }}
-                />
-            )}
-         </AnimatePresence>
+            {/* Top White Curtain - Follows the Black curtain */}
+            <motion.div
+                className="absolute left-1/2 bottom-0 w-[150vw] h-[150vh] bg-white pointer-events-none"
+                style={{ translateX: "-50%", zIndex: 101 }}
+                initial={{ y: "0%" }}
+                animate={{ y: "100%", transitionEnd: { opacity: 0 } }}
+                exit={{ y: "0%", opacity: 1, zIndex: 101 }}
+                transition={{ duration: 0.8, ease: [0.33, 1, 0.68, 1], delay: 0.15 }}
+            />
+            
+            {/* Bottom Curtain (Black Layer) - Moves to reveal Pink */}
+            <motion.div
+                className="absolute left-1/2 top-full w-[150vw] h-[150vh] bg-black pointer-events-none"
+                style={{ translateX: "-50%", zIndex: 120 }}
+                initial={{ y: "0%" }}
+                animate={{ y: "100%" }}
+                exit={{ y: "0%" }}
+                transition={{ duration: 0.7, ease: [0.33, 1, 0.68, 1], delay: 1.25 }}
+            />
 
+            {/* Bottom Pink Curtain - Moves to reveal Content */}
+            <motion.div
+                className="absolute left-1/2 top-full w-[150vw] h-[150vh] bg-[#FF959E] pointer-events-none"
+                style={{ translateX: "-50%", zIndex: 115 }}
+                initial={{ y: "0%" }}
+                animate={{ y: "100%" }}
+                exit={{ y: "0%" }}
+                transition={{ duration: 0.8, ease: [0.33, 1, 0.68, 1], delay: 1.4 }}
+            />
 
-        {/* Header */}
-        <motion.div 
-            className="flex items-end justify-center border-b-4 border-white pb-6 mb-4 relative z-60"
-            initial={{ opacity: 0, y: -20 }}
-            animate={stage !== "init" ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.5 }}
-        >
-          <h2 className="text-6xl font-bold text-white tracking-wider flex items-baseline gap-6">
-            <span className="text-[#DB404A] relative inline-block px-2 text-7xl">
-                <span className="absolute -left-9 top-1 text-[#DB404A] text-5xl">「</span>
-                YOUR
-                <span className="absolute -right-10 bottom-1 text-[#DB404A] text-5xl">」</span>
-            </span>
-            <span>Settings</span>
-          </h2>
-          <button
-            onClick={onClose}
-            className="absolute right-0 bottom-6 text-3xl font-bold text-white hover:text-[#FF959E] transition-colors"
-          >
-            Return
-          </button>
-        </motion.div>
+            {/* Actual Header Content */}
+            <motion.div 
+                className="flex items-end justify-center border-b-4 border-white pb-6  relative z-60"
+                initial={{ opacity: 1 }}
+                // No extra animation, static reveal by curtain
+            >
+            <h2 className="text-6xl font-bold text-white tracking-wider flex items-baseline gap-6">
+                <span className="text-[#DB404A] relative inline-block px-2 text-7xl">
+                    <span className="absolute -left-9 top-1 text-[#DB404A] text-5xl">「</span>
+                    YOUR
+                    <span className="absolute -right-10 bottom-1 text-[#DB404A] text-5xl">」</span>
+                </span>
+                <span>Settings</span>
+            </h2>
+            <button
+                onClick={onClose}
+                className="absolute right-0 bottom-6 text-3xl font-bold text-white hover:text-[#FF959E] transition-colors"
+            >
+                Return
+            </button>
+            </motion.div>
+        </div>
 
         {/* Subtitle */}
-        <motion.div 
-            className="text-lg italic text-white bold text-center mb-5 relative z-10"
-            initial={{ opacity: 0 }}
-            animate={stage === "show" ? { opacity: 1 } : {}}
-            transition={{ delay: 0.2 }}
-        >
+        <div className="text-lg italic text-white bold text-center mb-5 mt-3 relative z-[105]">
             Let's Customize Our World!?
-        </motion.div>
+        </div>
 
         {/* Content */}
-        <div className="relative z-10 px-4 flex flex-col justify-start pb-5">
+        <div className="relative z-[105] px-4 flex flex-col justify-start pb-5">
           <SelectorRow
             label="Display Mode"
             options={["Windowed", "Fullscreen", "Borderless"]}
