@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import MenuButton from "./MenuButton";
+import SplashScreen from "./SplashScreen";
 
 interface MenuItem {
   label: string;
@@ -32,6 +33,7 @@ export default function App() {
   const [isMuted, setIsMuted] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [distortionKey, setDistortionKey] = useState(0);
+  const [showSplash, setShowSplash] = useState(true);
 
   // Sets up the music and the glitch timer when the app starts
   useEffect(() => {
@@ -78,6 +80,11 @@ export default function App() {
 
   return (
     <main className="relative w-full h-screen overflow-hidden font-sans bg-black">
+      <AnimatePresence>
+        {showSplash && (
+          <SplashScreen onComplete={() => setShowSplash(false)} />
+        )}
+      </AnimatePresence>
       {/* 1. DISTORTION LAYER
           Creates random flickering shards that invert colors on the screen.
       */}
@@ -143,12 +150,13 @@ export default function App() {
           <img
             src="/logo.png"
             alt="Logo"
-            className="w-75 md:w-125 object-contain"
+            className="w-75 md:w-125 object-contain select-none"
+            draggable={false}
           />
         </header>
 
         <nav
-          className="flex flex-col items-center gap-4"
+          className="flex flex-col items-center gap-4 select-none"
           onMouseLeave={() => setHoveredIndex(null)}
         >
           {menuItems.map((item, index) => (

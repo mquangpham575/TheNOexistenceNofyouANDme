@@ -5,64 +5,9 @@
     <link rel="icon" type="image/svg+xml" href="/icon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>The NOexistenceN of you AND me</title>
-
-    <style>
-      /* Smooth fade-in for the actual app content */
-      #root {
-        opacity: 0;
-        transition: opacity 1s ease-in;
-      }
-
-      /* Initial state for the loading screen */
-      #loading-screen {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: #000000;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        z-index: 9999;
-        transition: opacity 0.8s ease-out;
-      }
-
-      .loader-text {
-        color: #ffffff;
-        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-        letter-spacing: 2px;
-        text-transform: uppercase;
-        font-size: 0.8rem;
-      }
-    </style>
   </head>
   <body>
-    <div id="loading-screen">
-      <div class="loader-text">Loading...</div>
-    </div>
-
     <div id="root"></div>
-
     <script type="module" src="/src/main.tsx"></script>
-
-    <script>
-      // This waits for all images, scripts, and CSS to fully load
-      window.addEventListener("load", function () {
-        // Wait at least 2000ms (2 seconds) before starting the fade-out
-        setTimeout(() => {
-          const loader = document.getElementById("loading-screen");
-          const root = document.getElementById("root");
-
-          loader.style.opacity = "0";
-          root.style.opacity = "1";
-
-          setTimeout(() => {
-            loader.style.display = "none";
-          }, 800);
-        }, 1000);
-      });
-    </script>
   </body>
 </html>
