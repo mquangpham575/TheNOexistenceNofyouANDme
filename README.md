@@ -3,7 +3,7 @@
 A "non functional" fan tribute to the game **The NOexistenceN of you AND me**, originally developed by **Nino Games** and **0x0Real Studio**.
 
 <div align="center">
-  <img src="public/readme_icon.gif" alt="App Preview" />
+  <img src="public/readme_top_preview.png" alt="App Preview" />
 </div>
 
 ## Features
@@ -63,3 +63,7 @@ Before you begin, ensure you have the following installed:
 ## Disclaimer
 
 This is a non-profit fan project. I do not own the rights to the original game. All credit for the concept, characters, and assets goes to Nino Games and 0x0Real Studio. Please don't sue me; I'm just a fan with a text editor and a dream.
+
+<div align="center">
+  <img src="public/readme_icon.gif" alt="App Preview" />
+</div>
