@@ -36,6 +36,37 @@ export default function SettingsModal({
   onVoiceMuteToggle
 }: SettingsModalProps) {
   const [displayMode, setDisplayMode] = useState("Windowed");
+
+  useEffect(() => {
+    const handleFullscreenChange = () => {
+      setDisplayMode(document.fullscreenElement ? "Fullscreen" : "Windowed");
+    };
+
+    document.addEventListener("fullscreenchange", handleFullscreenChange);
+    // Initialize state
+    handleFullscreenChange();
+
+    return () => {
+      document.removeEventListener("fullscreenchange", handleFullscreenChange);
+    };
+  }, []);
+
+  const handleDisplayModeSelect = (mode: string) => {
+    setDisplayMode(mode);
+    if (mode === "Fullscreen") {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch((err) => {
+          console.error("Error attempting to enable fullscreen:", err);
+        });
+      }
+    } else {
+      if (document.fullscreenElement) {
+        document.exitFullscreen().catch((err) => {
+          console.error("Error attempting to exit fullscreen:", err);
+        });
+      }
+    }
+  };
   const [voiceLang, setVoiceLang] = useState("Japanese");
   const [textLang, setTextLang] = useState("English");
   
@@ -302,7 +333,7 @@ export default function SettingsModal({
             label="Display Mode"
             options={["Windowed", "Fullscreen", "Borderless"]}
             selected={displayMode}
-            onSelect={setDisplayMode}
+            onSelect={handleDisplayModeSelect}
             subtitle="How would you like your world to unfold before you?"
           />
 
