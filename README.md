@@ -1,31 +1,64 @@
 # The NOexistenceN of you AND me Web App
 
-A "mostly functional" fan tribute to The NOexistenceN of you AND me, originally developed by Nino Games and 0x0Real Studio.
+A "mostly functional" fan tribute to **The NOexistenceN of you AND me**, originally developed by **Nino Games** and **0x0Real Studio**.
 
 <div align="center">
-  <img src="public/readme_icon.gif" alt="alt text" />
+  <img src="public/readme_icon.gif" alt="App Preview" />
 </div>
 
-# Tech Stack
+## Features
 
-- React + TS
-- Framer Motion
-- Vite
+- **Immersive Interface**: Custom main menu with hover animations and seamless transitions.
+- **Audio Integration**: Background music (OST) support with interactive playback controls.
+- **Visuals**: Animated backgrounds and planned 3D interactive book model integration.
+- **Modern Tech**: Built with React 19 and TypeScript for a robust, type-safe architecture.
+- **Smooth Animations**: fluid UI interactions powered by Framer Motion.
+
+## Tech Stack
+
+- **Framework**: [React 19](https://react.dev/) + [TypeScript](https://www.typescriptlang.org/)
+- **Build Tool**: [Vite](https://vitejs.dev/)
+- **Styling**: [Tailwind CSS v4](https://tailwindcss.com/)
+- **Animation**: [Framer Motion](https://www.framer.com/motion/)
+- **Icons**: [Lucide React](https://lucide.dev/)
+
+## Prerequisites
+
+Before you begin, ensure you have the following installed:
+
+- **Node.js**: v18 or higher (LTS recommended).
+- **Package Manager**: npm, yarn, or pnpm.
+
+### Installation & Run
+
+1. Clone the repository.
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+3. Start the development server:
+   ```bash
+   npm run dev
+   ```
 
 ## Roadmap
 
-- [x] Real background for the true ending "Lilth exist".
-- [x] Icon and UI Menu.
-- [x] UI: Hover animations for Menu items.
-- [x] BGM: Main menu OST
-- [x] Screen loader: Add a black for initial load, click to close it and show the web site. (to load the OST as well)
-- [x] Settings: UI for settings.
-- [x] Settings: Transistions to show up and close the settings.
-- [x] Settings: dialog for each settings, hover animation for customizeable/reset/return.
-- [ ] Settings: Make its setting functional.
-- [ ] A page of the book -> book show the note.
+- [x] 1st page - Main menu: 
+  - [x] Real background for the true ending "Lilth exist".
+  - [x] Icon and UI Menu.
+  - [x] UI: Hover animations for Menu items.
+  - [x] BGM: Main menu OST
+  - [x] Screen loader: Add a black for initial load, click to close it and show the web site. (to load the OST as well)
+- [ ] Settings: UI for settings.
+  - [x] UI for settings
+  - [x] Transitions to show up and close the settings.
+  - [ ] Dialog for each settings, hover animation for customizeable/reset/return.
+  - [ ] Make the setting options functional.
+- [ ] 2nd page - 3D Blender book model:
+  - [ ] 2nd page Ui and background. (the room)
+  - [ ] Click to the book -> Transition to show the note.
+  - [ ] Return to the room -> Transition to close the note.
 - [ ] Gallery: A place for all the "Fleeting Memories".
-
 
 ## Disclaimer
 
