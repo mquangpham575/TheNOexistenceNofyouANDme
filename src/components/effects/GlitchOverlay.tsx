@@ -1,23 +1,36 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-// Helper for jagged shapes
-const generateSharpPath = () => {
+// Helper for pixelated/stepped shapes
+const generatePixelatedPath = () => {
     const points = [];
-    const segments = 12;
-    points.push("0% 20%");
-    for (let j = 1; j < segments; j++) {
-      const x = (j / segments) * 100;
-      const y = Math.random() * 40;
-      points.push(`${x}% ${y}%`);
+    const steps = 4; // Reduced steps for more pixelated look
+    const segmentWidth = 100 / steps;
+
+    // Top edge
+    let x = 0;
+    let y = Math.floor(Math.random() * 4) * 10; // Snap to 10% grid
+    points.push(`${x}% ${y}%`);
+
+    for (let i = 0; i < steps; i++) {
+        x += segmentWidth;
+        points.push(`${x}% ${y}%`); // Horizontal
+        y = Math.floor(Math.random() * 4) * 10; // New Y
+        points.push(`${x}% ${y}%`); // Vertical
     }
-    points.push("100% 20%", "100% 80%");
-    for (let j = segments - 1; j > 0; j--) {
-      const x = (j / segments) * 100;
-      const y = 60 + Math.random() * 40;
-      points.push(`${x}% ${y}%`);
+
+    // Bottom edge
+    x = 100;
+    y = 60 + Math.floor(Math.random() * 4) * 10;
+    points.push(`${x}% ${y}%`);
+
+    for (let i = 0; i < steps; i++) {
+        x -= segmentWidth;
+        points.push(`${x}% ${y}%`);
+        y = 60 + Math.floor(Math.random() * 4) * 10;
+        points.push(`${x}% ${y}%`);
     }
-    points.push("0% 80%");
+
     return `polygon(${points.join(",")})`;
 };
 
@@ -53,13 +66,11 @@ export default function GlitchOverlay({ manualTrigger, zIndex = 5 }: GlitchOverl
         {[...Array(4)].map((_, i) => {
           const widthPercent = 5 + Math.random() * 30;
           const glitchColors = [
-            "#ff00ff",
-            "#00ffff",
-            "#00ff00",
-            "#ff0000",
-            "#FF959E",
-            "#FFFF00",
-            "#9D00FF",
+            "#FFFFFF", // White
+            "#000000", // Black
+            "#FF959E", // Pink
+            "#DB404A", // Red
+            "#505050", // Grey
           ];
           const color1 = glitchColors[Math.floor(Math.random() * glitchColors.length)];
           const color2 = glitchColors[Math.floor(Math.random() * glitchColors.length)];
@@ -74,9 +85,9 @@ export default function GlitchOverlay({ manualTrigger, zIndex = 5 }: GlitchOverl
                 left: `${Math.random() * (100 - widthPercent)}%`,
                 width: `${widthPercent}%`,
                 height: `${2 + Math.random() * 20}px`,
-                clipPath: generateSharpPath(),
+                clipPath: generatePixelatedPath(),
                 background: `linear-gradient(${angle}deg, ${color1}, ${color2})`,
-                boxShadow: `0 0 15px ${color1}, 0 0 5px white`,
+                boxShadow: `0 0 0px ${color1}, 0 0 0px white`, // Removed blur
                 zIndex: 1,
               }}
               initial={{ opacity: 0, x: -20 }}

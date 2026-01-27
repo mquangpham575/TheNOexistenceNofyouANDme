@@ -14,8 +14,18 @@ interface MenuItem {
 
 export default function App() {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
-  const [isMuted, setIsMuted] = useState(false);
+  const [bgmVolume, setBgmVolume] = useState(40);
+  const prevVolumeRef = useRef(40);
+  
+  const [sfxVolume, setSfxVolume] = useState(60);
+  const prevSfxVolumeRef = useRef(60);
+  
+  const [voiceVolume, setVoiceVolume] = useState(80);
+  const prevVoiceVolumeRef = useRef(80);
+
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const currentSfxRef = useRef<HTMLAudioElement | null>(null);
+  const currentVoiceRef = useRef<HTMLAudioElement | null>(null);
   const [distortionKey, setDistortionKey] = useState(0);
   const [showSplash, setShowSplash] = useState(true);
   const [showSettings, setShowSettings] = useState(false);
@@ -24,11 +34,19 @@ export default function App() {
   const [curtainMode, setCurtainMode] = useState<"hidden" | "covering" | "exiting">("hidden");
   const [pendingAction, setPendingAction] = useState<"openSettings" | "closeSettings" | null>(null);
 
+
+  // Sync volume
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.volume = bgmVolume / 100;
+    }
+  }, [bgmVolume]);
+
   // Setup music & glitch
   useEffect(() => {
-    const audio = new Audio("/menu_bgm.mp3");
+    const audio = new Audio("/audio/menu_bgm.mp3");
     audio.loop = true;
-    audio.volume = 0.4;
+    audio.volume = bgmVolume / 100;
     audioRef.current = audio;
 
     // Auto-play workaround
@@ -83,10 +101,67 @@ export default function App() {
 
   // Toggle mute
   const toggleMute = () => {
-    if (audioRef.current) {
-      const newMutedState = !isMuted;
-      audioRef.current.muted = newMutedState;
-      setIsMuted(newMutedState);
+    if (bgmVolume > 0) {
+      prevVolumeRef.current = bgmVolume;
+      setBgmVolume(0);
+    } else {
+      setBgmVolume(prevVolumeRef.current > 0 ? prevVolumeRef.current : 40);
+    }
+  };
+
+  // SFX Logic
+  const playSfxPreview = (vol: number) => {
+    if (currentSfxRef.current) {
+        currentSfxRef.current.pause();
+        currentSfxRef.current.currentTime = 0;
+    }
+    const sfx = new Audio("/audio/setting_sfx.MP3");
+    sfx.volume = vol / 100;
+    sfx.play().catch(() => {});
+    currentSfxRef.current = sfx;
+  };
+
+  const handleSfxChange = (vol: number) => {
+    setSfxVolume(vol);
+    playSfxPreview(vol);
+  };
+
+  const toggleSfxMute = () => {
+    if (sfxVolume > 0) {
+        prevSfxVolumeRef.current = sfxVolume;
+        setSfxVolume(0);
+    } else {
+        const restore = prevSfxVolumeRef.current > 0 ? prevSfxVolumeRef.current : 60;
+        setSfxVolume(restore);
+        playSfxPreview(restore);
+    }
+  };
+
+  // Voice Logic
+  const playVoicePreview = (vol: number) => {
+    if (currentVoiceRef.current) {
+        currentVoiceRef.current.pause();
+        currentVoiceRef.current.currentTime = 0;
+    }
+    const voice = new Audio("/audio/setting_voice.MP3");
+    voice.volume = vol / 100;
+    voice.play().catch(() => {});
+    currentVoiceRef.current = voice;
+  };
+
+  const handleVoiceChange = (vol: number) => {
+    setVoiceVolume(vol);
+    playVoicePreview(vol);
+  };
+
+  const toggleVoiceMute = () => {
+    if (voiceVolume > 0) {
+        prevVoiceVolumeRef.current = voiceVolume;
+        setVoiceVolume(0);
+    } else {
+        const restore = prevVoiceVolumeRef.current > 0 ? prevVoiceVolumeRef.current : 80;
+        setVoiceVolume(restore);
+        playVoicePreview(restore);
     }
   };
 
@@ -112,7 +187,23 @@ export default function App() {
           <SplashScreen onComplete={() => setShowSplash(false)} />
         )}
         {showSettings && (
-            <SettingsModal onClose={handleSettingsClose} />
+            <SettingsModal 
+              onClose={handleSettingsClose} 
+              bgmVolume={bgmVolume}
+              onBgmVolumeChange={setBgmVolume}
+              isBgmMuted={bgmVolume === 0}
+              onBgmMuteToggle={toggleMute}
+              
+              sfxVolume={sfxVolume}
+              onSfxVolumeChange={handleSfxChange}
+              isSfxMuted={sfxVolume === 0}
+              onSfxMuteToggle={toggleSfxMute}
+
+              voiceVolume={voiceVolume}
+              onVoiceVolumeChange={handleVoiceChange}
+              isVoiceMuted={voiceVolume === 0}
+              onVoiceMuteToggle={toggleVoiceMute}
+            />
         )}
       </AnimatePresence>
       {/* Distortion Layer */}
@@ -165,13 +256,7 @@ export default function App() {
         </nav>
       </div>
 
-      {/* Mute Button */}
-      <button
-        onClick={toggleMute}
-        className="absolute bottom-10 right-10 z-30 px-3 py-1 bg-black/40 border border-white/50 text-white text-xs font-bold uppercase tracking-widest hover:bg-white hover:text-black transition-all"
-      >
-        {isMuted ? "Muted" : "Audio On"}
-      </button>
+
     </main>
   );
 }

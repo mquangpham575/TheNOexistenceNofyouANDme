@@ -4,9 +4,37 @@ import GlitchOverlay from "../effects/GlitchOverlay";
 
 interface SettingsModalProps {
   onClose: () => void;
+  bgmVolume?: number;
+  onBgmVolumeChange?: (vol: number) => void;
+  isBgmMuted?: boolean;
+  onBgmMuteToggle?: () => void;
+  // SFX
+  sfxVolume?: number;
+  onSfxVolumeChange?: (vol: number) => void;
+  isSfxMuted?: boolean;
+  onSfxMuteToggle?: () => void;
+  // Voice
+  voiceVolume?: number;
+  onVoiceVolumeChange?: (vol: number) => void;
+  isVoiceMuted?: boolean;
+  onVoiceMuteToggle?: () => void;
 }
 
-export default function SettingsModal({ onClose }: SettingsModalProps) {
+export default function SettingsModal({ 
+  onClose,
+  bgmVolume,
+  onBgmVolumeChange,
+  isBgmMuted,
+  onBgmMuteToggle,
+  sfxVolume,
+  onSfxVolumeChange,
+  isSfxMuted,
+  onSfxMuteToggle,
+  voiceVolume,
+  onVoiceVolumeChange,
+  isVoiceMuted,
+  onVoiceMuteToggle
+}: SettingsModalProps) {
   const [displayMode, setDisplayMode] = useState("Windowed");
   const [voiceLang, setVoiceLang] = useState("Japanese");
   const [textLang, setTextLang] = useState("English");
@@ -27,9 +55,53 @@ export default function SettingsModal({ onClose }: SettingsModalProps) {
     });
   }, []);
 
+  const defaultSubtitle = "Let's Customize Our World!?";
+  const [activeSubtitle, setActiveSubtitle] = useState(defaultSubtitle);
+
+  const handleMouseEnter = (subtitle: string) => {
+    setActiveSubtitle(subtitle);
+  };
+
+  const handleMouseLeave = () => {
+    setActiveSubtitle(defaultSubtitle);
+  };
+
   // Slider Row
-  const SliderRow = ({ label, showMute = false }: { label: string; showMute?: boolean }) => {
-    const [value, setValue] = useState(75);
+  const SliderRow = ({ 
+    label, 
+    showMute = false,
+    value,
+    onChange,
+    isMuted,
+    onToggleMute,
+    subtitle // Add subtitle prop
+  }: { 
+    label: string; 
+    showMute?: boolean;
+    value?: number;
+    onChange?: (val: number) => void;
+    isMuted?: boolean;
+    onToggleMute?: () => void;
+    subtitle: string; // Required subtitle
+  }) => {
+    const [localValue, setLocalValue] = useState(value ?? 75);
+    
+    useEffect(() => {
+        if (value !== undefined) {
+             setLocalValue(value);
+        }
+    }, [value]);
+
+    const handleSliderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const newVal = Number(e.target.value);
+        setLocalValue(newVal);
+    };
+
+    const handleCommit = () => {
+        if (onChange) {
+            onChange(localValue);
+        }
+    };
 
     return (
       <div className="flex justify-between mb-3 p-1 ">
@@ -39,18 +111,27 @@ export default function SettingsModal({ onClose }: SettingsModalProps) {
             type="range"
             min="0"
             max="100"
-            value={value}
-            onChange={(e) => setValue(Number(e.target.value))}
+            value={localValue}
+            onChange={handleSliderChange}
+            onMouseUp={handleCommit}
+            onTouchEnd={handleCommit}
+            onMouseEnter={() => handleMouseEnter(subtitle)}
+            onMouseLeave={handleMouseLeave}
             className="w-full h-9 bg-gray-600 rounded-lg appearance-none cursor-pointer setting-slider"
             style={{
-                background: `linear-gradient(to right, white ${value}%, #979797 ${value}%)`
+                background: `linear-gradient(to right, white ${localValue}%, #979797 ${localValue}%)`
             }}
           />
         </div>
         <div className="w-24 flex justify-end items-center">
         {showMute && (
-        <button className="text-white text-3xl font-bold text-right hover:text-[#FF959E] transition-colors pr-15">
-            Mute
+        <button 
+            onClick={onToggleMute}
+            onMouseEnter={() => handleMouseEnter(subtitle)}
+            onMouseLeave={handleMouseLeave}
+            className={`text-3xl font-bold text-right transition-colors pr-15 ${isMuted ? "text-[#FF959E]" : "text-white hover:text-[#FF959E]"}`}
+        >
+            {isMuted ? "Unmute" : "Mute"}
           </button>
         )}
         </div>
@@ -64,11 +145,13 @@ export default function SettingsModal({ onClose }: SettingsModalProps) {
     options,
     selected,
     onSelect,
+    subtitle // Add subtitle prop
   }: {
     label: string;
     options: string[];
     selected: string;
     onSelect: (val: string) => void;
+    subtitle: string; // Required subtitle
   }) => (
     <div className="flex items-center justify-between mb-3 p-1 transition-colors">
       <span className="text-white text-3xl w-56 font-bold text-right mr-20">{label}</span>
@@ -77,6 +160,8 @@ export default function SettingsModal({ onClose }: SettingsModalProps) {
           <button
             key={opt}
             onClick={() => onSelect(opt)}
+            onMouseEnter={() => handleMouseEnter(subtitle)}
+            onMouseLeave={handleMouseLeave}
             className={`transition-colors flex items-center ${
               selected === opt ? "text-white hover:text-[#FF959E]" : "text-white hover:text-[#FF959E]"
             }`}
@@ -108,6 +193,23 @@ export default function SettingsModal({ onClose }: SettingsModalProps) {
             transition: border-color 0.2s;
         }
         .setting-slider:hover::-moz-range-thumb {
+            border-color: #DDDDDD;
+        }
+      `}</style>
+      <style>{`
+        /* WebKit/Blink (Chrome, Edge, Safari) */
+        .setting-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 16px;
+            height: 38px;
+            background: black;
+            border: 3px solid #A9A9A9;
+            border-radius: 5px;
+            transition: border-color 0.2s;
+            cursor: pointer;
+        }
+        .setting-slider:hover::-webkit-slider-thumb {
             border-color: #DDDDDD;
         }
       `}</style>
@@ -181,8 +283,17 @@ export default function SettingsModal({ onClose }: SettingsModalProps) {
         </div>
 
         {/* Subtitle */}
-        <div className="text-lg italic text-white font-bold text-center mb-5 mt-3 relative z-105">
-            Let's Customize Our World!?
+        <div className="text-lg italic text-white font-bold text-center mb-5 mt-3 relative z-105 h-8 overflow-hidden">
+            <motion.span
+                key={activeSubtitle}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: 20 }}
+                transition={{ duration: 0.3, ease: "easeOut" }}
+                className="inline-block"
+            >
+                {activeSubtitle}
+            </motion.span>
         </div>
 
         {/* Content */}
@@ -192,18 +303,47 @@ export default function SettingsModal({ onClose }: SettingsModalProps) {
             options={["Windowed", "Fullscreen", "Borderless"]}
             selected={displayMode}
             onSelect={setDisplayMode}
+            subtitle="How would you like your world to unfold before you?"
           />
 
-          <SliderRow label="Text Speed" />
-          <SliderRow label="BGM Volume" showMute />
-          <SliderRow label="SFX Volume" showMute />
-          <SliderRow label="Voice Volume" showMute />
+          <SliderRow 
+            label="Text Speed" 
+            subtitle="Want me to speak faster or slower ? No problem at all!"
+          />
+          <SliderRow 
+            label="BGM Volume" 
+            showMute 
+            value={bgmVolume}
+            onChange={onBgmVolumeChange}
+            isMuted={isBgmMuted}
+            onToggleMute={onBgmMuteToggle}
+            subtitle="Hope it won't effect my voice~"
+          />
+          <SliderRow 
+            label="SFX Volume" 
+            showMute 
+            value={sfxVolume}
+            onChange={onSfxVolumeChange}
+            isMuted={isSfxMuted}
+            onToggleMute={onSfxMuteToggle}
+            subtitle="You can adjust the game sound effects here."
+          />
+          <SliderRow 
+            label="Voice Volume" 
+            showMute 
+            value={voiceVolume}
+            onChange={onVoiceVolumeChange}
+            isMuted={isVoiceMuted}
+            onToggleMute={onVoiceMuteToggle}
+            subtitle="How's this sound~?"
+          />
 
           <SelectorRow
             label="Voice Language"
             options={["Chinese", "Japanese"]}
             selected={voiceLang}
             onSelect={setVoiceLang}
+            subtitle="Magical Girl Lilth can do anything!"
           />
 
           <SelectorRow
@@ -211,6 +351,7 @@ export default function SettingsModal({ onClose }: SettingsModalProps) {
             options={["简体中文", "繁體中文", "English", "日本語"]}
             selected={textLang}
             onSelect={setTextLang}
+            subtitle="How would you like the world's symbols to appear?"
           />
         </div>
 
