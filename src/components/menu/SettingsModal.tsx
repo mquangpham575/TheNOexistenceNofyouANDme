@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import GlitchOverlay from "../effects/GlitchOverlay";
 
@@ -36,14 +36,27 @@ export default function SettingsModal({
   onVoiceMuteToggle
 }: SettingsModalProps) {
   const [displayMode, setDisplayMode] = useState("Windowed");
+  const intendedModeRef = useRef("Windowed");
 
   useEffect(() => {
     const handleFullscreenChange = () => {
-      setDisplayMode(document.fullscreenElement ? "Fullscreen" : "Windowed");
+      const isFs = !!document.fullscreenElement;
+      if (isFs) {
+          if (intendedModeRef.current === "Borderless") {
+              setDisplayMode("Borderless");
+          } else {
+              setDisplayMode("Fullscreen");
+          }
+      } else {
+          setDisplayMode("Windowed");
+          intendedModeRef.current = "Windowed";
+      }
     };
 
     document.addEventListener("fullscreenchange", handleFullscreenChange);
-    // Initialize state
+    // Initialize state logic requires knowing current FS state - 
+    // but without ref persistence across reloads we rely on default or current state.
+    // We can call handler to sync.
     handleFullscreenChange();
 
     return () => {
@@ -52,8 +65,9 @@ export default function SettingsModal({
   }, []);
 
   const handleDisplayModeSelect = (mode: string) => {
+    intendedModeRef.current = mode;
     setDisplayMode(mode);
-    if (mode === "Fullscreen") {
+    if (mode === "Fullscreen" || mode === "Borderless") {
       if (!document.fullscreenElement) {
         document.documentElement.requestFullscreen().catch((err) => {
           console.error("Error attempting to enable fullscreen:", err);
@@ -246,7 +260,7 @@ export default function SettingsModal({
       `}</style>
 
       {/* Main Container */}
-      <div className="relative w-full h-full max-w-[90%] border-none py-10 px-16 flex flex-col z-10">
+      <div className={`relative w-full h-full max-w-[90%] border-none py-10 px-16 flex flex-col z-10 transition-transform duration-500 ${(displayMode === "Fullscreen" || displayMode === "Borderless") ? "scale-110 origin-center" : ""}`}>
          
         {/* Header containing the anchor */}
         <div className="relative">

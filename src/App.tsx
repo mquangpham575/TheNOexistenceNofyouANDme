@@ -173,6 +173,22 @@ export default function App() {
     { label: "Exit", action: () => console.log("Exit") },
   ];
 
+  const [isFullscreen, setIsFullscreen] = useState(false);
+
+  useEffect(() => {
+    const handleFullscreenChange = () => {
+      setIsFullscreen(!!document.fullscreenElement);
+    };
+    document.addEventListener("fullscreenchange", handleFullscreenChange);
+    handleFullscreenChange(); // Init
+    return () => document.removeEventListener("fullscreenchange", handleFullscreenChange);
+  }, []);
+
+  // UI Layer
+  const menuContainerStyle = isFullscreen 
+    ? "absolute top-10 left-20 z-20 flex flex-col items-center" 
+    : "absolute top-10 left-20 z-20 flex flex-col items-center origin-top-left scale-90";
+
   return (
     <main className="relative w-full h-screen overflow-hidden font-sans bg-black">
       {/* Transition Curtain */}
@@ -230,7 +246,7 @@ export default function App() {
       />
 
       {/* UI Layer */}
-      <div className="absolute top-10 left-20 z-20 flex flex-col items-center">
+      <div className={menuContainerStyle}>
         <header className="mb-6">
           <img
             src="/logo.png"
