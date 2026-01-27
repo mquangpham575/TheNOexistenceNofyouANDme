@@ -30,33 +30,32 @@ export default function App() {
   const [showSplash, setShowSplash] = useState(true);
   const [showSettings, setShowSettings] = useState(false);
   
-  // Transition
+  // --- State: Transitions & UI ---
   const [curtainMode, setCurtainMode] = useState<"hidden" | "covering" | "exiting">("hidden");
   const [pendingAction, setPendingAction] = useState<"openSettings" | "closeSettings" | null>(null);
 
 
-  // Sync volume
+  // --- Effects: Audio & System ---
   useEffect(() => {
     if (audioRef.current) {
       audioRef.current.volume = bgmVolume / 100;
     }
   }, [bgmVolume]);
 
-  // Setup music & glitch
   useEffect(() => {
     const audio = new Audio("/audio/menu_bgm.mp3");
     audio.loop = true;
     audio.volume = bgmVolume / 100;
     audioRef.current = audio;
 
-    // Auto-play workaround
+    // Audio autoplay handling
     const startAudio = () => {
       audio.play().catch(() => {});
       window.removeEventListener("click", startAudio);
     };
     window.addEventListener("click", startAudio);
 
-    // Glitch trigger
+    // Glitch timer
     const distortionInterval = setInterval(() => {
       setDistortionKey((prev) => prev + 1);
     }, 3500);
@@ -99,7 +98,7 @@ export default function App() {
     setCurtainMode("hidden");
   };
 
-  // Toggle mute
+  // --- Audio Handlers ---
   const toggleMute = () => {
     if (bgmVolume > 0) {
       prevVolumeRef.current = bgmVolume;
@@ -109,7 +108,6 @@ export default function App() {
     }
   };
 
-  // SFX Logic
   const playSfxPreview = (vol: number) => {
     if (currentSfxRef.current) {
         currentSfxRef.current.pause();
@@ -137,7 +135,6 @@ export default function App() {
     }
   };
 
-  // Voice Logic
   const playVoicePreview = (vol: number) => {
     if (currentVoiceRef.current) {
         currentVoiceRef.current.pause();
@@ -222,11 +219,10 @@ export default function App() {
             />
         )}
       </AnimatePresence>
-      {/* Distortion Layer */}
-      {/* Distortion Layer */}
+      
+      {/* Visual Effects Layer */}
       <GlitchOverlay manualTrigger={distortionKey} zIndex={5} />
 
-      {/* Background Image */}
       <motion.div
         className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat scale-105"
         style={{ backgroundImage: "url('/bg.png')" }}
@@ -245,7 +241,7 @@ export default function App() {
         transition={{ duration: 0.15 }}
       />
 
-      {/* UI Layer */}
+      {/* Main Menu UI */}
       <div className={menuContainerStyle}>
         <header className="mb-6">
           <img

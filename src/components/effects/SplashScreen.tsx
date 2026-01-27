@@ -23,13 +23,11 @@ export default function SplashScreen({ onComplete }: SplashScreenProps) {
     });
   }, []);
 
+  /**
+   * Hanlde user interaction to dismiss splash screen
+   */
   const handleClick = () => {
     if (!isLoading) {
-      if (!document.fullscreenElement) {
-        document.documentElement.requestFullscreen().catch((err) => {
-          console.error("Error attempting to enable fullscreen:", err);
-        });
-      }
       onComplete();
     }
   };

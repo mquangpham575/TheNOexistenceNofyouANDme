@@ -8,12 +8,12 @@ interface SettingsModalProps {
   onBgmVolumeChange?: (vol: number) => void;
   isBgmMuted?: boolean;
   onBgmMuteToggle?: () => void;
-  // SFX
+  // --- SFX ---
   sfxVolume?: number;
   onSfxVolumeChange?: (vol: number) => void;
   isSfxMuted?: boolean;
   onSfxMuteToggle?: () => void;
-  // Voice
+  // --- Voice ---
   voiceVolume?: number;
   onVoiceVolumeChange?: (vol: number) => void;
   isVoiceMuted?: boolean;
@@ -54,9 +54,6 @@ export default function SettingsModal({
     };
 
     document.addEventListener("fullscreenchange", handleFullscreenChange);
-    // Initialize state logic requires knowing current FS state - 
-    // but without ref persistence across reloads we rely on default or current state.
-    // We can call handler to sync.
     handleFullscreenChange();
 
     return () => {
@@ -111,7 +108,7 @@ export default function SettingsModal({
     setActiveSubtitle(defaultSubtitle);
   };
 
-  // Slider Row
+  // --- Components: SliderRow ---
   const SliderRow = ({ 
     label, 
     showMute = false,
@@ -184,7 +181,7 @@ export default function SettingsModal({
     );
   };
 
-  // Selector Row
+  // --- Components: SelectorRow ---
   const SelectorRow = ({
     label,
     options,
@@ -259,10 +256,10 @@ export default function SettingsModal({
         }
       `}</style>
 
-      {/* Main Container */}
+      {/* Modal Container */}
       <div className={`relative w-full h-full max-w-[90%] border-none py-10 px-16 flex flex-col z-10 transition-transform duration-500 ${(displayMode === "Fullscreen" || displayMode === "Borderless") ? "scale-110 origin-center" : ""}`}>
          
-        {/* Header containing the anchor */}
+        {/* Header Section */}
         <div className="relative">
             {/* Top Curtain - Anchored to bottom of header line */}
             <motion.div
@@ -304,7 +301,7 @@ export default function SettingsModal({
                 transition={{ duration: 0.8, ease: [0.33, 1, 0.68, 1], delay: 0.15 }}
             />
 
-            {/* Actual Header Content */}
+            {/* Header Content */}
             <motion.div 
                 className="flex items-end justify-center border-b-4 border-white pb-6  relative z-60"
                 initial={{ opacity: 1 }}
