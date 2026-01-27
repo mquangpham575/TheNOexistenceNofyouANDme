@@ -49,17 +49,19 @@ Before you begin, ensure you have the following installed:
   - [x] UI: Hover animations for Menu items.
   - [x] BGM: Main menu OST
   - [x] Screen loader: Add a black for initial load, click to close it and show the web site. (to load the OST as well)
+- [ ] 2nd page - Continue (3D Blender book model):
+  - [ ] 2nd page Ui and background. (the room)
+  - [ ] Click to the book -> Transition to show the note.
+  - [ ] Return to the room -> Transition to close the note.
 - [x] Settings: UI for settings. (67% cause idk how to do the hover animation and text speed cuz no text yet)
   - [x] UI for settings
   - [x] Transitions to show up and close the settings.
   - [x] Dialog for each settings, 
   - [ ] Hover animation for customizeable/reset/return.
   - [ ] Make the setting options functional. (not the text speed)
-- [ ] 2nd page - 3D Blender book model:
-  - [ ] 2nd page Ui and background. (the room)
-  - [ ] Click to the book -> Transition to show the note.
-  - [ ] Return to the room -> Transition to close the note.
-- [ ] Gallery: A place for all the "Fleeting Memories".
+- [ ] Fleeting Memories: Gallery.
+- [ ] Backers: Credits.
+- [x] Exit: Close the website.
 
 ## Disclaimer
 

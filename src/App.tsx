@@ -167,7 +167,16 @@ export default function App() {
     { label: "Settings", action: handleSettingsOpen },
     { label: "Fleeting Memories", action: () => console.log("Memories") },
     { label: "Backers", action: () => console.log("Backers") },
-    { label: "Exit", action: () => console.log("Exit") },
+    { 
+      label: "Exit", 
+      action: () => {
+        window.close();
+        // Fallback for browsers that block window.close()
+        if (!window.closed) {
+          alert("Please close this tab to exit.");
+        }
+      } 
+    },
   ];
 
   const [isFullscreen, setIsFullscreen] = useState(false);
