@@ -53,8 +53,8 @@ Before you begin, ensure you have the following installed:
   - [x] UI for settings
   - [x] Transitions to show up and close the settings.
   - [x] Dialog for each settings, 
-  - [x] Hover animation for customizeable/reset/return.
-  - [x] Make the setting options functional. (not the text speed)
+  - [ ] Hover animation for customizeable/reset/return.
+  - [ ] Make the setting options functional. (not the text speed)
 - [ ] 2nd page - 3D Blender book model:
   - [ ] 2nd page Ui and background. (the room)
   - [ ] Click to the book -> Transition to show the note.
