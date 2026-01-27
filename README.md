@@ -1,6 +1,6 @@
-# The NOexistenceN of you AND me Web App
+# The NOexistenceN of you AND me Web Design
 
-A "mostly functional" fan tribute to **The NOexistenceN of you AND me**, originally developed by **Nino Games** and **0x0Real Studio**.
+A "non functional" fan tribute to the game **The NOexistenceN of you AND me**, originally developed by **Nino Games** and **0x0Real Studio**.
 
 <div align="center">
   <img src="public/readme_icon.gif" alt="App Preview" />
