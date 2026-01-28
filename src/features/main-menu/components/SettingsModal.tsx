@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
-import GlitchOverlay from "../effects/GlitchOverlay";
+import GlitchOverlay from "../../../components/effects/GlitchOverlay";
 
 interface SettingsModalProps {
   onClose: () => void;

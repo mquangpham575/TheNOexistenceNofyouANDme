@@ -1,10 +1,10 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import MenuButton from "./MenuButton";
-import SplashScreen from "./SplashScreen";
-import SettingsModal from "./SettingsModal";
-import TransitionCurtain from "../effects/TransitionCurtain";
-import GlitchOverlay from "../effects/GlitchOverlay";
+import MenuButton from "../components/MenuButton";
+import SplashScreen from "../components/SplashScreen";
+import SettingsModal from "../components/SettingsModal";
+import TransitionCurtain from "../../../components/effects/TransitionCurtain";
+import GlitchOverlay from "../../../components/effects/GlitchOverlay";
 
 interface MenuItem {
   label: string;
