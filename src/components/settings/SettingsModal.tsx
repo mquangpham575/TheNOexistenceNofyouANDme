@@ -1,40 +1,90 @@
 import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
-import GlitchOverlay from "../../../components/effects/GlitchOverlay";
+import GlitchOverlay from "#components/effects/GlitchOverlay";
+import { useSettings } from "#context/SettingsContext";
+import { SliderRow } from "#components/settings/components/SliderRow";
+import { SelectorRow } from "#components/settings/components/SelectorRow";
 
 interface SettingsModalProps {
   onClose: () => void;
-  bgmVolume?: number;
-  onBgmVolumeChange?: (vol: number) => void;
-  isBgmMuted?: boolean;
-  onBgmMuteToggle?: () => void;
-  // --- SFX ---
-  sfxVolume?: number;
-  onSfxVolumeChange?: (vol: number) => void;
-  isSfxMuted?: boolean;
-  onSfxMuteToggle?: () => void;
-  // --- Voice ---
-  voiceVolume?: number;
-  onVoiceVolumeChange?: (vol: number) => void;
-  isVoiceMuted?: boolean;
-  onVoiceMuteToggle?: () => void;
 }
 
-export default function SettingsModal({ 
-  onClose,
-  bgmVolume,
-  onBgmVolumeChange,
-  isBgmMuted,
-  onBgmMuteToggle,
-  sfxVolume,
-  onSfxVolumeChange,
-  isSfxMuted,
-  onSfxMuteToggle,
-  voiceVolume,
-  onVoiceVolumeChange,
-  isVoiceMuted,
-  onVoiceMuteToggle
-}: SettingsModalProps) {
+export default function SettingsModal({ onClose }: SettingsModalProps) {
+  const { 
+    bgmVolume, setBgmVolume,
+    sfxVolume, setSfxVolume,
+    voiceVolume, setVoiceVolume
+  } = useSettings();
+  
+  const prevVolumeRef = useRef(bgmVolume);
+  const prevSfxVolumeRef = useRef(sfxVolume);
+  const prevVoiceVolumeRef = useRef(voiceVolume);
+  const currentSfxRef = useRef<HTMLAudioElement | null>(null);
+  const currentVoiceRef = useRef<HTMLAudioElement | null>(null);
+
+  // --- Helpers for Audio ---
+  const toggleMute = () => {
+      if (bgmVolume > 0) {
+        prevVolumeRef.current = bgmVolume;
+        setBgmVolume(0);
+      } else {
+        setBgmVolume(prevVolumeRef.current > 0 ? prevVolumeRef.current : 40);
+      }
+    };
+  
+  const playSfxPreview = (vol: number) => {
+    if (currentSfxRef.current) {
+        currentSfxRef.current.pause();
+        currentSfxRef.current.currentTime = 0;
+    }
+    const sfx = new Audio("/audio/setting_sfx.MP3");
+    sfx.volume = vol / 100;
+    sfx.play().catch(() => {});
+    currentSfxRef.current = sfx;
+  };
+
+  const handleSfxChange = (vol: number) => {
+    setSfxVolume(vol);
+    playSfxPreview(vol);
+  };
+
+  const toggleSfxMute = () => {
+    if (sfxVolume > 0) {
+        prevSfxVolumeRef.current = sfxVolume;
+        setSfxVolume(0);
+    } else {
+        const restore = prevSfxVolumeRef.current > 0 ? prevSfxVolumeRef.current : 60;
+        setSfxVolume(restore);
+        playSfxPreview(restore);
+    }
+  };
+
+  const playVoicePreview = (vol: number) => {
+    if (currentVoiceRef.current) {
+        currentVoiceRef.current.pause();
+        currentVoiceRef.current.currentTime = 0;
+    }
+    const voice = new Audio("/audio/setting_voice.MP3");
+    voice.volume = vol / 100;
+    voice.play().catch(() => {});
+    currentVoiceRef.current = voice;
+  };
+
+  const handleVoiceChange = (vol: number) => {
+    setVoiceVolume(vol);
+    playVoicePreview(vol);
+  };
+
+  const toggleVoiceMute = () => {
+    if (voiceVolume > 0) {
+        prevVoiceVolumeRef.current = voiceVolume;
+        setVoiceVolume(0);
+    } else {
+        const restore = prevVoiceVolumeRef.current > 0 ? prevVoiceVolumeRef.current : 80;
+        setVoiceVolume(restore);
+        playVoicePreview(restore);
+    }
+  };
   const [displayMode, setDisplayMode] = useState("Windowed");
   const intendedModeRef = useRef("Windowed");
 
@@ -87,7 +137,7 @@ export default function SettingsModal({
     const minDelay = new Promise((resolve) => setTimeout(resolve, 1000));
     const imgLoad = new Promise((resolve) => {
       const img = new Image();
-      img.src = "/bg.png";
+      img.src = "/main-menu/bg.png";
       if (img.complete) resolve(null);
       else img.onload = () => resolve(null);
     });
@@ -108,118 +158,12 @@ export default function SettingsModal({
     setActiveSubtitle(defaultSubtitle);
   };
 
-  // --- Components: SliderRow ---
-  const SliderRow = ({ 
-    label, 
-    showMute = false,
-    value,
-    onChange,
-    isMuted,
-    onToggleMute,
-    subtitle // Add subtitle prop
-  }: { 
-    label: string; 
-    showMute?: boolean;
-    value?: number;
-    onChange?: (val: number) => void;
-    isMuted?: boolean;
-    onToggleMute?: () => void;
-    subtitle: string; // Required subtitle
-  }) => {
-    const [localValue, setLocalValue] = useState(value ?? 75);
-    
-    useEffect(() => {
-        if (value !== undefined) {
-             setLocalValue(value);
-        }
-    }, [value]);
 
-    const handleSliderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const newVal = Number(e.target.value);
-        setLocalValue(newVal);
-    };
-
-    const handleCommit = () => {
-        if (onChange) {
-            onChange(localValue);
-        }
-    };
-
-    return (
-      <div className="flex justify-between mb-3 p-1 ">
-        <span className="text-white text-3xl font-bold w-56 text-right mr-20">{label}</span>
-        <div className="flex-1 flex items-center pr-25">
-          <input
-            type="range"
-            min="0"
-            max="100"
-            value={localValue}
-            onChange={handleSliderChange}
-            onMouseUp={handleCommit}
-            onTouchEnd={handleCommit}
-            onMouseEnter={() => handleMouseEnter(subtitle)}
-            onMouseLeave={handleMouseLeave}
-            className="w-full h-9 bg-gray-600 rounded-lg appearance-none cursor-pointer setting-slider"
-            style={{
-                background: `linear-gradient(to right, white ${localValue}%, #979797 ${localValue}%)`
-            }}
-          />
-        </div>
-        <div className="w-24 flex justify-end items-center">
-        {showMute && (
-        <button 
-            onClick={onToggleMute}
-            onMouseEnter={() => handleMouseEnter(subtitle)}
-            onMouseLeave={handleMouseLeave}
-            className={`text-3xl font-bold text-right transition-colors pr-15 ${isMuted ? "text-[#FF959E]" : "text-white hover:text-[#FF959E]"}`}
-        >
-            {isMuted ? "Unmute" : "Mute"}
-          </button>
-        )}
-        </div>
-      </div>
-    );
-  };
-
-  // --- Components: SelectorRow ---
-  const SelectorRow = ({
-    label,
-    options,
-    selected,
-    onSelect,
-    subtitle // Add subtitle prop
-  }: {
-    label: string;
-    options: string[];
-    selected: string;
-    onSelect: (val: string) => void;
-    subtitle: string; // Required subtitle
-  }) => (
-    <div className="flex items-center justify-between mb-3 p-1 transition-colors">
-      <span className="text-white text-3xl w-56 font-bold text-right mr-20">{label}</span>
-      <div className="flex-1 flex gap-8 text-white text-3xl font-bold">
-        {options.map((opt) => (
-          <button
-            key={opt}
-            onClick={() => onSelect(opt)}
-            onMouseEnter={() => handleMouseEnter(subtitle)}
-            onMouseLeave={handleMouseLeave}
-            className={`transition-colors flex items-center ${
-              selected === opt ? "text-white hover:text-[#FF959E]" : "text-white hover:text-[#FF959E]"
-            }`}
-          >
-             {selected === opt && <span className="w-3.5 h-8 bg-white rounded-sm mr-2 inline-block"></span>}
-             {opt}
-          </button>
-        ))}
-      </div>
-    </div>
-  );
 
   return (
     <motion.div
       className="fixed inset-0 z-50 flex items-center justify-center bg-cover bg-center select-none"
-      style={{ backgroundImage: "url('/bg.png')" }}
+      style={{ backgroundImage: "url('/main-menu/bg.png')" }}
       initial={{ opacity: 1 }}
       exit={{ opacity: 0, pointerEvents: "none" }}
     >
@@ -346,38 +290,48 @@ export default function SettingsModal({
             selected={displayMode}
             onSelect={handleDisplayModeSelect}
             subtitle="How would you like your world to unfold before you?"
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
           />
 
           <SliderRow 
             label="Text Speed" 
             subtitle="Want me to speak faster or slower ? No problem at all!"
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
           />
           <SliderRow 
             label="BGM Volume" 
             showMute 
             value={bgmVolume}
-            onChange={onBgmVolumeChange}
-            isMuted={isBgmMuted}
-            onToggleMute={onBgmMuteToggle}
+            onChange={setBgmVolume}
+            isMuted={bgmVolume === 0}
+            onToggleMute={toggleMute}
             subtitle="Hope it won't effect my voice~"
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
           />
           <SliderRow 
             label="SFX Volume" 
             showMute 
             value={sfxVolume}
-            onChange={onSfxVolumeChange}
-            isMuted={isSfxMuted}
-            onToggleMute={onSfxMuteToggle}
+            onChange={handleSfxChange}
+            isMuted={sfxVolume === 0}
+            onToggleMute={toggleSfxMute}
             subtitle="You can adjust the game sound effects here."
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
           />
           <SliderRow 
             label="Voice Volume" 
             showMute 
             value={voiceVolume}
-            onChange={onVoiceVolumeChange}
-            isMuted={isVoiceMuted}
-            onToggleMute={onVoiceMuteToggle}
+            onChange={handleVoiceChange}
+            isMuted={voiceVolume === 0}
+            onToggleMute={toggleVoiceMute}
             subtitle="How's this sound~?"
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
           />
 
           <SelectorRow
@@ -386,6 +340,8 @@ export default function SettingsModal({
             selected={voiceLang}
             onSelect={setVoiceLang}
             subtitle="Magical Girl Lilth can do anything!"
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
           />
 
           <SelectorRow
@@ -394,6 +350,8 @@ export default function SettingsModal({
             selected={textLang}
             onSelect={setTextLang}
             subtitle="How would you like the world's symbols to appear?"
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
           />
         </div>
 

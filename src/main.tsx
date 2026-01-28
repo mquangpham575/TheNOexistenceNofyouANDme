@@ -1,10 +1,13 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import './assets/styles/index.css'
-import MainMenu from './features/main-menu/routes/MainMenu.tsx'
+import '#assets/styles/index.css'
+import App from '#app/App'
+import { SettingsProvider } from '#context/SettingsContext';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <MainMenu />
+    <SettingsProvider>
+      <App />
+    </SettingsProvider>
   </StrictMode>,
 )
