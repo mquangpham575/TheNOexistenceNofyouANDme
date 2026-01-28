@@ -1,10 +1,10 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import MenuButton from "./components/menu/MenuButton";
-import SplashScreen from "./components/effects/SplashScreen";
-import SettingsModal from "./components/menu/SettingsModal";
-import TransitionCurtain from "./components/effects/TransitionCurtain";
-import GlitchOverlay from "./components/effects/GlitchOverlay";
+import MenuButton from "./MenuButton";
+import SplashScreen from "./SplashScreen";
+import SettingsModal from "./SettingsModal";
+import TransitionCurtain from "../effects/TransitionCurtain";
+import GlitchOverlay from "../effects/GlitchOverlay";
 
 interface MenuItem {
   label: string;
@@ -12,7 +12,7 @@ interface MenuItem {
 }
 
 
-export default function App() {
+export default function MainMenu() {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [bgmVolume, setBgmVolume] = useState(40);
   const prevVolumeRef = useRef(40);

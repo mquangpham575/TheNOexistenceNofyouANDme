@@ -249,7 +249,7 @@ export default function SettingsModal({
             border: 3px solid #A9A9A9;
             border-radius: 5px;
             transition: border-color 0.2s;
-            cursor: pointer;
+            cursor: url("/cursor.png") 0 0, auto;
         }
         .setting-slider:hover::-webkit-slider-thumb {
             border-color: #DDDDDD;

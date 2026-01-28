@@ -20,18 +20,18 @@
   background-size: cover;
   background-position: center;
 }
+/* Enforce custom cursor everywhere, overriding system defaults and Tailwind classes */
 html,
-body {
-  cursor:
-    url("/cursor.png") 0 0,
-    auto;
-}
-
+body,
 button,
 a,
 [role="button"],
-.cursor-pointer {
-  cursor:
-    url("/cursor.png") 0 0,
-    pointer;
+.cursor-pointer,
+input,
+select,
+textarea,
+[type="button"],
+[type="reset"],
+[type="submit"] {
+  cursor: url("/cursor.png") 0 0, auto !important;
 }
