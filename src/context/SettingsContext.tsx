@@ -12,8 +12,8 @@ interface SettingsContextType {
 const SettingsContext = createContext<SettingsContextType | undefined>(undefined);
 
 export function SettingsProvider({ children }: { children: ReactNode }) {
-  const [bgmVolume, setBgmVolume] = useState(40);
-  const [sfxVolume, setSfxVolume] = useState(60);
+  const [bgmVolume, setBgmVolume] = useState(65);
+  const [sfxVolume, setSfxVolume] = useState(65);
   const [voiceVolume, setVoiceVolume] = useState(80);
 
   return (
