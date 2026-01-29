@@ -1,59 +1,63 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-// Helper for pixelated/stepped shapes
+// Generates a random stepped polygon path for glitch visual effect
 const generatePixelatedPath = () => {
-    const points = [];
-    const steps = 4; // Reduced steps for more pixelated look
-    const segmentWidth = 100 / steps;
+  const points = [];
+  const steps = 4; // Adjustment: Higher = smoother path, Lower = blockier
+  const segmentWidth = 100 / steps;
 
-    // Top edge
-    let x = 0;
-    let y = Math.floor(Math.random() * 4) * 10; // Snap to 10% grid
+  // Top edge generation
+  let x = 0;
+  let y = Math.floor(Math.random() * 4) * 10; // Snap to 10% grid
+  points.push(`${x}% ${y}%`);
+
+  for (let i = 0; i < steps; i++) {
+    x += segmentWidth;
+    points.push(`${x}% ${y}%`); // Horizontal step
+    y = Math.floor(Math.random() * 4) * 10; // New Y
+    points.push(`${x}% ${y}%`); // Vertical step
+  }
+
+  // Bottom edge generation
+  x = 100;
+  y = 60 + Math.floor(Math.random() * 4) * 10;
+  points.push(`${x}% ${y}%`);
+
+  for (let i = 0; i < steps; i++) {
+    x -= segmentWidth;
     points.push(`${x}% ${y}%`);
-
-    for (let i = 0; i < steps; i++) {
-        x += segmentWidth;
-        points.push(`${x}% ${y}%`); // Horizontal
-        y = Math.floor(Math.random() * 4) * 10; // New Y
-        points.push(`${x}% ${y}%`); // Vertical
-    }
-
-    // Bottom edge
-    x = 100;
     y = 60 + Math.floor(Math.random() * 4) * 10;
     points.push(`${x}% ${y}%`);
+  }
 
-    for (let i = 0; i < steps; i++) {
-        x -= segmentWidth;
-        points.push(`${x}% ${y}%`);
-        y = 60 + Math.floor(Math.random() * 4) * 10;
-        points.push(`${x}% ${y}%`);
-    }
-
-    return `polygon(${points.join(",")})`;
+  return `polygon(${points.join(",")})`;
 };
 
 interface GlitchOverlayProps {
-  manualTrigger?: number; // If provided, parent controls timing
+  manualTrigger?: number; // Optional external trigger
   zIndex?: number;
 }
 
-export default function GlitchOverlay({ manualTrigger, zIndex = 5 }: GlitchOverlayProps) {
+// Renders visual glitch artifacts overlay with optional manual trigger
+export default function GlitchOverlay({
+  manualTrigger,
+  zIndex = 5,
+}: GlitchOverlayProps) {
   const [internalTrigger, setInternalTrigger] = useState(0);
 
-  // If manualTrigger is NOT provided, run internal timer
+  // Auto-trigger glitch effect if no manual trigger provided
   useEffect(() => {
     if (manualTrigger !== undefined) return;
 
     const interval = setInterval(() => {
       setInternalTrigger((prev) => prev + 1);
-    }, 2000);
+    }, 2000); // Adjustment: Auto-glitch frequency in ms
 
     return () => clearInterval(interval);
   }, [manualTrigger]);
 
-  // Use manual trigger if available, otherwise internal
+  // Determine which trigger source to use
   const trigger = manualTrigger !== undefined ? manualTrigger : internalTrigger;
 
   return (
@@ -64,7 +68,8 @@ export default function GlitchOverlay({ manualTrigger, zIndex = 5 }: GlitchOverl
         style={{ zIndex }}
       >
         {[...Array(4)].map((_, i) => {
-          const widthPercent = 5 + Math.random() * 30;
+          // Generate customized glitch shards with random properties
+          const widthPercent = 5 + Math.random() * 30; // Adjustment: Glitch width range
           const glitchColors = [
             "#FFFFFF", // White
             "#000000", // Black
@@ -72,8 +77,10 @@ export default function GlitchOverlay({ manualTrigger, zIndex = 5 }: GlitchOverl
             "#DB404A", // Red
             "#505050", // Grey
           ];
-          const color1 = glitchColors[Math.floor(Math.random() * glitchColors.length)];
-          const color2 = glitchColors[Math.floor(Math.random() * glitchColors.length)];
+          const color1 =
+            glitchColors[Math.floor(Math.random() * glitchColors.length)];
+          const color2 =
+            glitchColors[Math.floor(Math.random() * glitchColors.length)];
           const angle = Math.floor(Math.random() * 360);
 
           return (
@@ -87,8 +94,8 @@ export default function GlitchOverlay({ manualTrigger, zIndex = 5 }: GlitchOverl
                 height: `${2 + Math.random() * 20}px`,
                 clipPath: generatePixelatedPath(),
                 background: `linear-gradient(${angle}deg, ${color1}, ${color2})`,
-                boxShadow: `0 0 0px ${color1}, 0 0 0px white`, // Removed blur
-                zIndex: 1,
+                boxShadow: `0 0 0px ${color1}, 0 0 0px white`,
+                zIndex: 1, // Adjustment: Layer order relative to other elements
               }}
               initial={{ opacity: 0, x: -20 }}
               animate={{
@@ -96,7 +103,7 @@ export default function GlitchOverlay({ manualTrigger, zIndex = 5 }: GlitchOverl
                 x: [-20, 20, 0],
                 scaleY: [1, 1.5, 1],
               }}
-              transition={{ duration: 0.4, ease: "easeInOut" }}
+              transition={{ duration: 0.4, ease: "easeInOut" }} // Adjustment: Animation speed
             />
           );
         })}

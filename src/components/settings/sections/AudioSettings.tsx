@@ -7,11 +7,18 @@ interface AudioSettingsProps {
   onMouseLeave: () => void;
 }
 
-export function AudioSettings({ onMouseEnter, onMouseLeave }: AudioSettingsProps) {
+// Renders audio configuration controls for BGM, SFX, and Voice
+export function AudioSettings({
+  onMouseEnter,
+  onMouseLeave,
+}: AudioSettingsProps) {
   const {
-    bgmVolume, setBgmVolume,
-    sfxVolume, setSfxVolume,
-    voiceVolume, setVoiceVolume
+    bgmVolume,
+    setBgmVolume,
+    sfxVolume,
+    setSfxVolume,
+    voiceVolume,
+    setVoiceVolume,
   } = useSettings();
 
   const prevVolumeRef = useRef(bgmVolume);
@@ -20,7 +27,7 @@ export function AudioSettings({ onMouseEnter, onMouseLeave }: AudioSettingsProps
   const currentSfxRef = useRef<HTMLAudioElement | null>(null);
   const currentVoiceRef = useRef<HTMLAudioElement | null>(null);
 
-  // --- Helpers for Audio ---
+  // Toggles BGM mute state, restoring previous volume if unmuted
   const toggleMute = () => {
     if (bgmVolume > 0) {
       prevVolumeRef.current = bgmVolume;
@@ -30,6 +37,7 @@ export function AudioSettings({ onMouseEnter, onMouseLeave }: AudioSettingsProps
     }
   };
 
+  // Plays a preview sound when SFX volume changes
   const playSfxPreview = (vol: number) => {
     if (currentSfxRef.current) {
       currentSfxRef.current.pause();
@@ -41,22 +49,26 @@ export function AudioSettings({ onMouseEnter, onMouseLeave }: AudioSettingsProps
     currentSfxRef.current = sfx;
   };
 
+  // Updates SFX volume and plays preview
   const handleSfxChange = (vol: number) => {
     setSfxVolume(vol);
     playSfxPreview(vol);
   };
 
+  // Toggles SFX mute and restores previous volume
   const toggleSfxMute = () => {
     if (sfxVolume > 0) {
       prevSfxVolumeRef.current = sfxVolume;
       setSfxVolume(0);
     } else {
-      const restore = prevSfxVolumeRef.current > 0 ? prevSfxVolumeRef.current : 60;
+      const restore =
+        prevSfxVolumeRef.current > 0 ? prevSfxVolumeRef.current : 60;
       setSfxVolume(restore);
       playSfxPreview(restore);
     }
   };
 
+  // Plays a preview voice line when Voice volume changes
   const playVoicePreview = (vol: number) => {
     if (currentVoiceRef.current) {
       currentVoiceRef.current.pause();
@@ -68,17 +80,20 @@ export function AudioSettings({ onMouseEnter, onMouseLeave }: AudioSettingsProps
     currentVoiceRef.current = voice;
   };
 
+  // Updates Voice volume and plays preview
   const handleVoiceChange = (vol: number) => {
     setVoiceVolume(vol);
     playVoicePreview(vol);
   };
 
+  // Toggles Voice mute and restores previous volume
   const toggleVoiceMute = () => {
     if (voiceVolume > 0) {
       prevVoiceVolumeRef.current = voiceVolume;
       setVoiceVolume(0);
     } else {
-      const restore = prevVoiceVolumeRef.current > 0 ? prevVoiceVolumeRef.current : 80;
+      const restore =
+        prevVoiceVolumeRef.current > 0 ? prevVoiceVolumeRef.current : 80;
       setVoiceVolume(restore);
       playVoicePreview(restore);
     }

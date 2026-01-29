@@ -5,11 +5,13 @@ interface SplashScreenProps {
   onComplete: () => void;
 }
 
+// Renders initial splash screen with loading and dismissal animation
 export default function SplashScreen({ onComplete }: SplashScreenProps) {
   const [isLoading, setIsLoading] = useState(true);
 
+  // Handles minimum display time and resource loading check
   useEffect(() => {
-    const minLoadTime = new Promise((resolve) => setTimeout(resolve, 1000));
+    const minLoadTime = new Promise((resolve) => setTimeout(resolve, 1000)); // Adjustment: Minimum splash duration
     const contentLoad = new Promise((resolve) => {
       if (document.readyState === "complete") {
         resolve(true);
@@ -18,14 +20,13 @@ export default function SplashScreen({ onComplete }: SplashScreenProps) {
       }
     });
 
+    // Wait for minimum time AND content load
     Promise.all([minLoadTime, contentLoad]).then(() => {
       setIsLoading(false);
     });
   }, []);
 
-  /**
-   * Hanlde user interaction to dismiss splash screen
-   */
+  // Completes splash screen sequence on user interaction
   const handleClick = () => {
     if (!isLoading) {
       onComplete();

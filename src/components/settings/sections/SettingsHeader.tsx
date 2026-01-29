@@ -5,7 +5,11 @@ interface SettingsHeaderProps {
   showBottomCurtains: boolean;
 }
 
-export function SettingsHeader({ onClose, showBottomCurtains }: SettingsHeaderProps) {
+// Header component with multi-layered curtain reveal animations
+export function SettingsHeader({
+  onClose,
+  showBottomCurtains,
+}: SettingsHeaderProps) {
   return (
     <div className="relative">
       {/* Top Curtain - Anchored to bottom of header line */}
@@ -18,7 +22,7 @@ export function SettingsHeader({ onClose, showBottomCurtains }: SettingsHeaderPr
         transition={{ duration: 0.7, ease: [0.33, 1, 0.68, 1] }}
       />
 
-      {/* Top White Curtain - Follows the Black curtain */}
+      {/* Top White Curtain - Follows the Black curtain with delay */}
       <motion.div
         className="absolute left-1/2 bottom-0 w-[150vw] h-[150vh] bg-white pointer-events-none"
         style={{ translateX: "-50%", zIndex: 101 }}
@@ -28,7 +32,7 @@ export function SettingsHeader({ onClose, showBottomCurtains }: SettingsHeaderPr
         transition={{ duration: 0.8, ease: [0.33, 1, 0.68, 1], delay: 0.15 }}
       />
 
-      {/* Bottom Curtain (Black Layer) - Moves to reveal Pink */}
+      {/* Bottom Curtain (Black Layer) - Moves down to reveal content */}
       <motion.div
         className="absolute left-1/2 top-full w-[150vw] h-[150vh] bg-black pointer-events-none"
         style={{ translateX: "-50%", zIndex: 120 }}
@@ -38,7 +42,7 @@ export function SettingsHeader({ onClose, showBottomCurtains }: SettingsHeaderPr
         transition={{ duration: 0.7, ease: [0.33, 1, 0.68, 1] }}
       />
 
-      {/* Bottom Pink Curtain - Moves to reveal Content */}
+      {/* Bottom Pink Curtain - Follows black curtain to reveal Content */}
       <motion.div
         className="absolute left-1/2 top-full w-[150vw] h-[150vh] bg-[#FF959E] pointer-events-none"
         style={{ translateX: "-50%", zIndex: 115 }}
@@ -48,16 +52,20 @@ export function SettingsHeader({ onClose, showBottomCurtains }: SettingsHeaderPr
         transition={{ duration: 0.8, ease: [0.33, 1, 0.68, 1], delay: 0.15 }}
       />
 
-      {/* Header Content */}
+      {/* Header Content: Title and Return button */}
       <motion.div
         className="flex items-end justify-center border-b-4 border-white pb-6  relative z-60"
         initial={{ opacity: 1 }}
       >
         <h2 className="text-6xl font-bold text-white tracking-wider flex items-baseline gap-10">
           <span className="text-[#DB404A] relative inline-block px-2 text-7xl">
-            <span className="absolute -left-9 top-1 text-[#DB404A] text-5xl">「</span>
+            <span className="absolute -left-9 top-1 text-[#DB404A] text-5xl">
+              「
+            </span>
             YOUR
-            <span className="absolute -right-10 bottom-1 text-[#DB404A] text-5xl">」</span>
+            <span className="absolute -right-10 bottom-1 text-[#DB404A] text-5xl">
+              」
+            </span>
           </span>
           <span className="text-5xl">Settings</span>
         </h2>

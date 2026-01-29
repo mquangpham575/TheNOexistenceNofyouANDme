@@ -5,7 +5,11 @@ interface TextSettingsProps {
   onMouseLeave: () => void;
 }
 
-export function TextSettings({ onMouseEnter, onMouseLeave }: TextSettingsProps) {
+// Renders text playback speed controls
+export function TextSettings({
+  onMouseEnter,
+  onMouseLeave,
+}: TextSettingsProps) {
   return (
     <SliderRow
       label="Text Speed"

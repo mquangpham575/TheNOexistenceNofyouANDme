@@ -1,6 +1,7 @@
 import React, { useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
+// Defines props for the menu button interaction and display
 interface MenuButtonProps {
   label: string;
   isHovered: boolean;
@@ -8,21 +9,22 @@ interface MenuButtonProps {
   onAction: () => void;
 }
 
+// Renders a stylized menu button with glitch and motion effects on hover
 const MenuButton: React.FC<MenuButtonProps> = ({
   label,
   isHovered,
   onMouseEnter,
   onAction,
 }) => {
-  // --- Glitch Logic ---
+  // Generates random glitch line properties when hovered
   const dashLines = useMemo(() => {
     if (!isHovered) return [];
-    const count = Math.floor(Math.random() * 3) + 2;
+    const count = Math.floor(Math.random() * 3) + 2; // Adjustment: Number of glitch lines (2-4)
     return Array.from({ length: count }).map((_, i) => ({
       id: Math.random(),
       top: 10 + Math.random() * 80,
       width: 40 + Math.random() * 40,
-      duration: 0.35 + Math.random() * 0.2,
+      duration: 0.35 + Math.random() * 0.2, // Adjustment: Duration of glitch cycle
       delay: i * 0.03,
       glitchColor: ["#ff00ff", "#00ffff", "#00ff00", "#ff0000"][
         Math.floor(Math.random() * 4)
@@ -36,7 +38,7 @@ const MenuButton: React.FC<MenuButtonProps> = ({
       onClick={onAction}
       className="relative h-16 flex items-center justify-center z-10 min-w-95"
     >
-      {/* Border Effect */}
+      {/* Renders static double-border background with gradient masking */}
       <motion.div
         className="absolute inset-0 z-0 pointer-events-none overflow-hidden"
         style={{
@@ -50,10 +52,11 @@ const MenuButton: React.FC<MenuButtonProps> = ({
         }}
       />
 
-      {/* Glitch Lines Layer */}
+      {/* Container for animated glitch lines */}
       <div className="absolute inset-0 z-40 pointer-events-none overflow-hidden">
         <AnimatePresence>
           {isHovered &&
+            // Renders individual glitch line with chaotic motion
             dashLines.map((line) => (
               <motion.div
                 key={line.id}
@@ -95,11 +98,11 @@ const MenuButton: React.FC<MenuButtonProps> = ({
         </AnimatePresence>
       </div>
 
-      {/* Hover Decoration Elements */}
+      {/* Manages entrance/exit animations for decorative shapes */}
       <AnimatePresence>
         {isHovered && (
           <>
-            {/* Shape: Black Square */}
+            {/* Displays rotating black square decoration */}
             <motion.div
               initial={{ scale: 0, rotate: -90 }}
               animate={{
@@ -119,7 +122,7 @@ const MenuButton: React.FC<MenuButtonProps> = ({
               className="absolute bottom-13 left-13 w-6 h-6 bg-black z-20 border-3 border-white"
             />
 
-            {/* Shape: Red Square */}
+            {/* Displays moving red square with spring animation */}
             <motion.div
               initial={{ scale: 0, rotate: -90, opacity: 0 }}
               animate={{
@@ -138,7 +141,7 @@ const MenuButton: React.FC<MenuButtonProps> = ({
               className="absolute top-0 left-5 w-9 h-9 bg-[#d33a4f] border-3 border-white z-30 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
             />
 
-            {/* Shape: White Square */}
+            {/* Displays moving white square with linear motion */}
             <motion.div
               initial={{ scale: 0, rotate: -90, opacity: 0 }}
               animate={{
@@ -160,7 +163,7 @@ const MenuButton: React.FC<MenuButtonProps> = ({
         )}
       </AnimatePresence>
 
-      {/* Button Label */}
+      {/* Animates label color and scale on hover */}
       <motion.div
         animate={{
           color: isHovered ? "#FF959E" : "#000000",

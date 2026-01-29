@@ -7,11 +7,12 @@ interface GraphicSettingsProps {
   onMouseLeave: () => void;
 }
 
-export function GraphicSettings({ 
-  displayMode, 
-  onDisplayModeChange, 
-  onMouseEnter, 
-  onMouseLeave 
+// Renders display mode configuration options
+export function GraphicSettings({
+  displayMode,
+  onDisplayModeChange,
+  onMouseEnter,
+  onMouseLeave,
 }: GraphicSettingsProps) {
   return (
     <SelectorRow

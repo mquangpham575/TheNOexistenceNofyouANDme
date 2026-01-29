@@ -6,7 +6,13 @@ interface TransitionCurtainProps {
   onComplete?: () => void;
 }
 
-export default function TransitionCurtain({ mode, onCovered, onComplete }: TransitionCurtainProps) {
+// Renders a full-screen transition curtain animation
+export default function TransitionCurtain({
+  mode,
+  onCovered,
+  onComplete,
+}: TransitionCurtainProps) {
+  // Animation states: hidden (above), covering (center), exiting (below)
   const variants = {
     hidden: { y: "-100%" },
     covering: { y: "0%" },
@@ -21,6 +27,7 @@ export default function TransitionCurtain({ mode, onCovered, onComplete }: Trans
       variants={variants}
       transition={{ duration: 0.4, ease: "easeInOut" }}
       onAnimationComplete={(definition) => {
+        // Trigger callbacks at specific animation stages
         if (definition === "covering" && onCovered) onCovered();
         if (definition === "exiting" && onComplete) onComplete();
       }}

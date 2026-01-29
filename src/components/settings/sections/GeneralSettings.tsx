@@ -1,20 +1,21 @@
 import { useState } from "react";
 import { SelectorRow } from "#components/settings/components/SelectorRow";
 
-
 interface GeneralSettingsProps {
   onMouseEnter: (subtitle: string) => void;
   onMouseLeave: () => void;
 }
 
-export function GeneralSettings({ onMouseEnter, onMouseLeave }: GeneralSettingsProps) {
+// Renders language and localization options
+export function GeneralSettings({
+  onMouseEnter,
+  onMouseLeave,
+}: GeneralSettingsProps) {
   const [voiceLang, setVoiceLang] = useState("Japanese");
   const [textLang, setTextLang] = useState("English");
 
   return (
     <>
-
-
       <SelectorRow
         label="Voice Language"
         options={["Chinese", "Japanese"]}

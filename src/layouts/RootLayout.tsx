@@ -6,11 +6,14 @@ interface RootLayoutProps {
   children: ReactNode;
 }
 
+// Provides the base layout structure with global visual effects
 export default function RootLayout({ children }: RootLayoutProps) {
+  // State to trigger glitch visual effects periodically
   const [distortionKey, setDistortionKey] = useState(0);
 
+  // Timer to trigger glitch effect every 3.5 seconds
   useEffect(() => {
-    // Glitch timer
+    // triggers periodic visual distortion
     const distortionInterval = setInterval(() => {
       setDistortionKey((prev) => prev + 1);
     }, 3500);
@@ -22,12 +25,12 @@ export default function RootLayout({ children }: RootLayoutProps) {
 
   return (
     <div className="relative w-full h-screen overflow-hidden font-sans bg-black">
-      {/* Visual Effects Layer */}
+      {/* Visual Effects Layer: Glitch overlay and background animation */}
       <GlitchOverlay manualTrigger={distortionKey} zIndex={5} />
 
       <motion.div
         className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat scale-105"
-        style={{ backgroundImage: "url('/main-menu/bg.png')" }}
+        style={{ backgroundImage: "url('/main-menu/bg.png')" }} // Adjustment: Background image resource path
         animate={
           distortionKey > 0
             ? {
@@ -42,11 +45,9 @@ export default function RootLayout({ children }: RootLayoutProps) {
         }
         transition={{ duration: 0.15 }}
       />
-      
-      {/* Content Layer */}
-      <div className="relative z-10 w-full h-full">
-         {children}
-      </div>
+
+      {/* Content Layer: Main application content */}
+      <div className="relative z-10 w-full h-full">{children}</div>
     </div>
   );
 }
