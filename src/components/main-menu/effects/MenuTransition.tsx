@@ -4,6 +4,7 @@ interface MenuTransitionProps {
   mode: "hidden" | "covering" | "exiting";
   onCovered?: () => void;
   onComplete?: () => void;
+  duration?: number;
 }
 
 // Renders a full-screen transition curtain animation
@@ -11,6 +12,7 @@ export default function MenuTransition({
   mode,
   onCovered,
   onComplete,
+  duration = 0.4,
 }: MenuTransitionProps) {
   // Animation states: hidden (above), covering (center), exiting (below)
   const variants = {
@@ -25,7 +27,7 @@ export default function MenuTransition({
       initial="hidden"
       animate={mode}
       variants={variants}
-      transition={{ duration: 0.4, ease: "easeInOut" }}
+      transition={{ duration: duration, ease: "easeInOut" }}
       onAnimationComplete={(definition) => {
         // Trigger callbacks at specific animation stages
         if (definition === "covering" && onCovered) onCovered();
