@@ -1,6 +1,6 @@
 import { type ReactNode, useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import GlitchOverlay from "#components/main-menu/effects/GlitchOverlay";
+import GlitchOverlay from "#components/effects/GlitchOverlay";
 
 interface RootLayoutProps {
   children: ReactNode;

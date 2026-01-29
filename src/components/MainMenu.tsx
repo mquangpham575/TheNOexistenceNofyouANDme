@@ -1,9 +1,10 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
-import MenuButton from "#components/main-menu/MenuButton";
-import LoadingScreen from "#components/main-menu/LoadingScreen";
-import SettingModal from "#components/main-menu/menu-button/setting/SettingModal";
-import MenuTransition from "#components/main-menu/effects/MenuTransition";
+import MenuButton from "#components/MenuButton";
+import LoadingScreen from "#components/LoadingScreen";
+import SettingModal from "#components/menu-button/setting/SettingModal";
+import MenuTransition from "#components/effects/MenuTransition";
 import { useSettings } from "#context/SettingsContext";
 import { useFullscreen } from "#hooks/useFullscreen";
 import { useAudio } from "#hooks/useAudio";
@@ -11,6 +12,7 @@ import { type MenuItem } from "#types/settings";
 
 // Renders the main menu with navigation, settings, and audio integration
 export default function MainMenu() {
+  const navigate = useNavigate();
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const { bgmVolume } = useSettings();
 
@@ -68,7 +70,7 @@ export default function MainMenu() {
 
   // definitions for menu buttons and their handlers
   const menuItems: MenuItem[] = [
-    { label: "Continue", action: () => console.log("Continue") },
+    { label: "Continue", action: () => navigate("/book-note") },
     { label: "Settings", action: handleSettingsOpen },
     { label: "Fleeting Memories", action: () => console.log("Memories") },
     { label: "Backers", action: () => console.log("Backers") },

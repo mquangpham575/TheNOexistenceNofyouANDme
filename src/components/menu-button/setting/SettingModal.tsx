@@ -1,11 +1,9 @@
 import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
-import GlitchOverlay from "#components/main-menu/effects/GlitchOverlay";
-import { SettingHeader } from "#components/main-menu/menu-button/setting/SettingHeader";
-import { AudioSetting } from "#components/main-menu/menu-button/setting/slider-row/AudioSetting";
-import { GraphicSetting } from "#components/main-menu/menu-button/setting/selector-row/GraphicSetting";
-import { TextSetting } from "#components/main-menu/menu-button/setting/slider-row/TextSetting";
-import { GeneralSetting } from "#components/main-menu/menu-button/setting/selector-row/GeneralSetting";
+import GlitchOverlay from "#components/effects/GlitchOverlay";
+import { SettingHeader } from "./SettingHeader";
+import { AudioSetting, TextSetting } from "./SliderRow";
+import { GraphicSetting, GeneralSetting } from "./SelectorRow";
 import { SettingFooter } from "./SettingFooter";
 
 interface SettingsModalProps {

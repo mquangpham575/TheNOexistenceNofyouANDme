@@ -49,7 +49,7 @@ Before you begin, ensure you have the following installed:
   - [ ] Hover animation for customizeable/reset/return.
 - [ ] Fleeting Memories: Gallery.
 - [ ] Backers: Credits.
-- [ ] Exit: Exit Screen with and voice lines.
+- [x] Exit: Exit Screen with and voice lines.
 
 ## Disclaimer
 
