@@ -26,14 +26,12 @@ export default function MainMenu() {
     "hidden" | "covering" | "exiting"
   >("hidden");
   const [pendingAction, setPendingAction] = useState<
-    "openSettings" | "closeSettings" | "exit" | null
+    "openSettings" | "closeSettings" | null
   >(null);
-  const [transitionDuration, setTransitionDuration] = useState(0.4);
 
   // Initiates transition to settings modal
   const handleSettingsOpen = () => {
     setPendingAction("openSettings");
-    setTransitionDuration(0.4);
     setCurtainMode("covering");
   };
 
@@ -54,14 +52,7 @@ export default function MainMenu() {
       return;
     }
 
-    if (pendingAction === "exit") {
-      window.close();
-      // Fallback for browsers that block window.close()
-      if (!window.closed) {
-        alert("Please close this tab to exit.");
-      }
-      return;
-    }
+    // Default simulation load logic
 
     // Default simulation load logic
     setTimeout(() => {
@@ -90,9 +81,13 @@ export default function MainMenu() {
         audio.play().catch((e) => console.error("Exit audio failed:", e));
 
         // Start transition
-        setPendingAction("exit");
-        setTransitionDuration(2.5);
-        setCurtainMode("covering");
+        setTimeout(() => {
+          window.close();
+          // Fallback for browsers that block window.close()
+          if (!window.closed) {
+            alert("Please close this tab to exit.");
+          }
+        }, 2000);
       },
     },
   ];
@@ -111,7 +106,6 @@ export default function MainMenu() {
         mode={curtainMode}
         onCovered={handleCurtainCovered}
         onComplete={handleCurtainComplete}
-        duration={transitionDuration}
       />
 
       {/* Modals: Splash Screen and Settings */}
