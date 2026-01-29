@@ -87,7 +87,7 @@ export default function MainMenu() {
           if (!window.closed) {
             alert("Please close this tab to exit.");
           }
-        }, 2000);
+        }, 3000);
       },
     },
   ];
