@@ -1,18 +1,19 @@
 import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
-import GlitchOverlay from "#components/effects/GlitchOverlay";
-import { SettingsHeader } from "#components/settings/sections/SettingsHeader";
-import { AudioSettings } from "#components/settings/sections/AudioSettings";
-import { GraphicSettings } from "#components/settings/sections/GraphicSettings";
-import { TextSettings } from "#components/settings/sections/TextSettings";
-import { GeneralSettings } from "#components/settings/sections/GeneralSettings";
+import GlitchOverlay from "#components/main-menu/effects/GlitchOverlay";
+import { SettingHeader } from "#components/main-menu/menu-button/setting/SettingHeader";
+import { AudioSetting } from "#components/main-menu/menu-button/setting/slider-row/AudioSetting";
+import { GraphicSetting } from "#components/main-menu/menu-button/setting/selector-row/GraphicSetting";
+import { TextSetting } from "#components/main-menu/menu-button/setting/slider-row/TextSetting";
+import { GeneralSetting } from "#components/main-menu/menu-button/setting/selector-row/GeneralSetting";
+import { SettingFooter } from "./SettingFooter";
 
 interface SettingsModalProps {
   onClose: () => void;
 }
 
 // Renders the settings modal with various configuration sections
-export default function SettingsModal({ onClose }: SettingsModalProps) {
+export default function SettingModal({ onClose }: SettingsModalProps) {
   // State and logic for handling display modes (Windowed, Fullscreen, Borderless)
   const [displayMode, setDisplayMode] = useState("Windowed");
   const intendedModeRef = useRef("Windowed");
@@ -135,7 +136,7 @@ export default function SettingsModal({ onClose }: SettingsModalProps) {
       <div
         className={`relative w-full h-full max-w-[90%] border-none py-10 px-16 flex flex-col z-10 transition-transform duration-500 ${displayMode === "Fullscreen" || displayMode === "Borderless" ? "scale-110 origin-center" : ""}`}
       >
-        <SettingsHeader
+        <SettingHeader
           onClose={onClose}
           showBottomCurtains={showBottomCurtains}
         />
@@ -156,35 +157,32 @@ export default function SettingsModal({ onClose }: SettingsModalProps) {
 
         {/* Settings Sections */}
         <div className="relative z-105 px-4 flex flex-col justify-start pb-5">
-          <GraphicSettings
+          <GraphicSetting
             displayMode={displayMode}
             onDisplayModeChange={handleDisplayModeSelect}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
           />
 
-          <TextSettings
+          <TextSetting
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
           />
 
-          <AudioSettings
+          <AudioSetting
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
           />
 
-          <GeneralSettings
+          <GeneralSetting
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
           />
         </div>
 
         {/* Reset Button */}
-        <div className="flex justify-center ">
-          <button className="text-4xl font-bold text-white hover:text-[#FF959E] transition-colors tracking-widest">
-            Reset
-          </button>
-        </div>
+        {/* Setting Footer */}
+        <SettingFooter />
       </div>
     </motion.div>
   );

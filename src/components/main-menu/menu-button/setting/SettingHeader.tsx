@@ -6,7 +6,7 @@ interface SettingsHeaderProps {
 }
 
 // Header component with multi-layered curtain reveal animations
-export function SettingsHeader({
+export function SettingHeader({
   onClose,
   showBottomCurtains,
 }: SettingsHeaderProps) {

@@ -1,17 +1,17 @@
 import { motion } from "framer-motion";
 
-interface TransitionCurtainProps {
+interface MenuTransitionProps {
   mode: "hidden" | "covering" | "exiting";
   onCovered?: () => void;
   onComplete?: () => void;
 }
 
 // Renders a full-screen transition curtain animation
-export default function TransitionCurtain({
+export default function MenuTransition({
   mode,
   onCovered,
   onComplete,
-}: TransitionCurtainProps) {
+}: MenuTransitionProps) {
   // Animation states: hidden (above), covering (center), exiting (below)
   const variants = {
     hidden: { y: "-100%" },

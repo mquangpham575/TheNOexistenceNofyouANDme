@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { AnimatePresence } from "framer-motion";
 import MenuButton from "#components/main-menu/MenuButton";
-import SplashScreen from "#components/main-menu/SplashScreen";
-import SettingsModal from "#components/settings/SettingsModal";
-import TransitionCurtain from "#components/effects/TransitionCurtain";
+import LoadingScreen from "#components/main-menu/LoadingScreen";
+import SettingModal from "#components/main-menu/menu-button/setting/SettingModal";
+import MenuTransition from "#components/main-menu/effects/MenuTransition";
 import { useSettings } from "#context/SettingsContext";
 import { useFullscreen } from "#hooks/useFullscreen";
 import { useAudio } from "#hooks/useAudio";
@@ -92,7 +92,7 @@ export default function MainMenu() {
   return (
     <>
       {/* Transition Curtain for scene changes */}
-      <TransitionCurtain
+      <MenuTransition
         mode={curtainMode}
         onCovered={handleCurtainCovered}
         onComplete={handleCurtainComplete}
@@ -100,8 +100,10 @@ export default function MainMenu() {
 
       {/* Modals: Splash Screen and Settings */}
       <AnimatePresence>
-        {showSplash && <SplashScreen onComplete={() => setShowSplash(false)} />}
-        {showSettings && <SettingsModal onClose={handleSettingsClose} />}
+        {showSplash && (
+          <LoadingScreen onComplete={() => setShowSplash(false)} />
+        )}
+        {showSettings && <SettingModal onClose={handleSettingsClose} />}
       </AnimatePresence>
 
       {/* Main Menu UI: Logo and Navigation Buttons */}

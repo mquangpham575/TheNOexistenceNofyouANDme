@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import { useSettings } from "#context/SettingsContext";
-import { SliderRow } from "#components/settings/components/SliderRow";
+import { SliderRow } from "./SliderRow";
 
 interface AudioSettingsProps {
   onMouseEnter: (subtitle: string) => void;
@@ -8,7 +8,7 @@ interface AudioSettingsProps {
 }
 
 // Renders audio configuration controls for BGM, SFX, and Voice
-export function AudioSettings({
+export function AudioSetting({
   onMouseEnter,
   onMouseLeave,
 }: AudioSettingsProps) {

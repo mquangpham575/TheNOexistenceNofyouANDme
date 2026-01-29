@@ -1,4 +1,4 @@
-import { SelectorRow } from "#components/settings/components/SelectorRow";
+import { SelectorRow } from "./SelectorRow";
 
 interface GraphicSettingsProps {
   displayMode: string;
@@ -8,7 +8,7 @@ interface GraphicSettingsProps {
 }
 
 // Renders display mode configuration options
-export function GraphicSettings({
+export function GraphicSetting({
   displayMode,
   onDisplayModeChange,
   onMouseEnter,

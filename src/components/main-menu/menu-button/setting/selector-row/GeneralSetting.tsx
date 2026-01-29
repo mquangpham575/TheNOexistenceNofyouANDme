@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { SelectorRow } from "#components/settings/components/SelectorRow";
+import { SelectorRow } from "./SelectorRow";
 
 interface GeneralSettingsProps {
   onMouseEnter: (subtitle: string) => void;
@@ -7,7 +7,7 @@ interface GeneralSettingsProps {
 }
 
 // Renders language and localization options
-export function GeneralSettings({
+export function GeneralSetting({
   onMouseEnter,
   onMouseLeave,
 }: GeneralSettingsProps) {

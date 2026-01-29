@@ -1,12 +1,12 @@
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 
-interface SplashScreenProps {
+interface LoadingScreenProps {
   onComplete: () => void;
 }
 
 // Renders initial splash screen with loading and dismissal animation
-export default function SplashScreen({ onComplete }: SplashScreenProps) {
+export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
   const [isLoading, setIsLoading] = useState(true);
 
   // Handles minimum display time and resource loading check

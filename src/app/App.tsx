@@ -1,4 +1,4 @@
-import MainMenu from "#routes/MainMenu";
+import MainMenu from "#components/main-menu/MainMenu";
 
 import RootLayout from "#layouts/RootLayout";
 
