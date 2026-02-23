@@ -28,6 +28,7 @@ export function useAudio(volume: number, src: string, loop: boolean = false) {
       audio.pause();
       window.removeEventListener("click", startAudio);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [src, loop]); // Re-init only if source changes
 
   return audioRef;

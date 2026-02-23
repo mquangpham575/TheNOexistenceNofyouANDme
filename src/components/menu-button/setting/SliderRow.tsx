@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef } from "react";
 import { useSettings } from "#context/SettingsContext";
 
 interface SliderRowProps {
@@ -26,13 +26,13 @@ export function SliderRow({
   onMouseLeave,
 }: SliderRowProps) {
   const [localValue, setLocalValue] = useState(value ?? 75); // Adjustment: Default slider value if undefined
+  const [prevPropsValue, setPrevPropsValue] = useState(value);
 
-  // Sync internal state with prop value changes
-  useEffect(() => {
-    if (value !== undefined) {
-      setLocalValue(value);
-    }
-  }, [value]);
+  // Sync internal state with prop value changes during render
+  if (value !== prevPropsValue) {
+    setPrevPropsValue(value);
+    setLocalValue(value ?? 75); // Adjustment: Default slider value if undefined
+  }
 
   // Updates local state while dragging
   const handleSliderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
