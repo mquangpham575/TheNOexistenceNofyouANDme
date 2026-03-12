@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 import MenuButton from "#components/MenuButton";
 import LoadingScreen from "#components/LoadingScreen";
@@ -9,6 +9,7 @@ import { useSettings } from "#context/SettingsContext";
 import { useFullscreen } from "#hooks/useFullscreen";
 import { useAudio } from "#hooks/useAudio";
 import { type MenuItem } from "#types/settings";
+import { useAuth } from "#context/AuthContext";
 
 // Renders the main menu with navigation, settings, and audio integration
 export default function MainMenu() {
@@ -95,6 +96,7 @@ export default function MainMenu() {
   ];
 
   const { isFullscreen } = useFullscreen();
+  const { user, logout } = useAuth();
 
   // Dynamic style based on fullscreen state
   const menuContainerStyle = isFullscreen
@@ -109,6 +111,41 @@ export default function MainMenu() {
         onCovered={handleCurtainCovered}
         onComplete={handleCurtainComplete}
       />
+
+      {/* Top-right auth buttons */}
+      <div className="absolute top-4 right-6 z-30 flex items-center gap-3 select-none">
+        {user ? (
+          <>
+            <Link
+              to="/profile"
+              className="font-title text-lg tracking-widest text-white hover:text-[#FF959E] transition-colors"
+            >
+              {user.profile?.displayName ?? user.email}
+            </Link>
+            <button
+              onClick={logout}
+              className="border border-[#DB404A]/70 text-[#DB404A]/80 text-sm px-3 py-1 hover:text-[#DB404A] hover:border-[#DB404A] transition-colors"
+            >
+              Logout
+            </button>
+          </>
+        ) : (
+          <>
+            <Link
+              to="/login"
+              className="border border-white text-white font-title text-lg tracking-widest px-4 py-1 hover:text-[#FF959E] hover:border-[#FF959E] transition-colors"
+            >
+              Login
+            </Link>
+            <Link
+              to="/register"
+              className="border border-white text-white font-title text-lg tracking-widest px-4 py-1 hover:text-[#FF959E] hover:border-[#FF959E] transition-colors"
+            >
+              Register
+            </Link>
+          </>
+        )}
+      </div>
 
       {/* Modals: Splash Screen and Settings */}
       <AnimatePresence>

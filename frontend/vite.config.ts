@@ -5,5 +5,13 @@ import tailwindcss from "@tailwindcss/vite";
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react(), tailwindcss()],
-  publicDir: 'assets',
+  publicDir: "assets",
+  server: {
+    proxy: {
+      "/api": {
+        target: "http://localhost:4000",
+        rewrite: (path) => path.replace(/^\/api/, ""),
+      },
+    },
+  },
 });
