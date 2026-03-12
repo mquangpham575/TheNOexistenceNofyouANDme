@@ -3,7 +3,7 @@
 A "non functional" fan tribute to the game **The NOexistenceN of you AND me**, originally developed by **Nino Games** and **0x0Real Studio**.
 
 <div align="center">
-  <img src="assets/readme/readme_top_preview.png" alt="App Preview" />
+  <img src="frontend/assets/readme/readme_top_preview.png" alt="App Preview" />
 </div>
 
 ## Features
@@ -34,12 +34,61 @@ Before you begin, ensure you have the following installed:
 1. Clone the repository.
 2. Install dependencies:
    ```bash
+   cd frontend
    npm install
    ```
 3. Start the development server:
    ```bash
+   cd frontend
    npm run dev
    ```
+
+## Backend (Step 1: Auth + Profiles)
+
+This repository now includes a backend API in `backend/` with:
+
+- JWT auth (`register`, `login`, `me`)
+- User profile fetch/update
+- PostgreSQL + Prisma ORM
+
+### Run Full Stack With Docker
+
+From the project root:
+
+```bash
+docker compose up -d --build
+```
+
+Services:
+
+- Frontend: `http://localhost:3000`
+- Backend API: `http://localhost:4000`
+- Postgres: `localhost:5432`
+
+The frontend Nginx is configured to proxy `http://localhost:3000/api/*` to the backend.
+
+### API Endpoints
+
+- `POST /auth/register`
+  - body: `{ "email": "user@example.com", "password": "password123", "displayName": "Player" }`
+- `POST /auth/login`
+  - body: `{ "email": "user@example.com", "password": "password123" }`
+- `GET /auth/me`
+  - auth: `Authorization: Bearer <token>`
+- `GET /profile`
+  - auth: `Authorization: Bearer <token>`
+- `PATCH /profile`
+  - auth: `Authorization: Bearer <token>`
+  - body example: `{ "displayName": "New Name", "bio": "...", "avatarUrl": null }`
+
+### Run Backend Alone (Optional)
+
+```bash
+cd backend
+npm install
+npm run db:push
+npm run dev
+```
 
 ## Roadmap
 
@@ -56,5 +105,5 @@ Before you begin, ensure you have the following installed:
 This is a non-profit fan project. I do not own the rights to the original game. All credit for the concept, characters, and assets goes to Nino Games and 0x0Real Studio. Please don't sue me; I'm just a fan with a text editor and a dream.
 
 <div align="center">
-  <img src="assets/readme/readme_icon.gif" alt="App Preview" />
+  <img src="frontend/assets/readme/readme_icon.gif" alt="App Preview" />
 </div>
