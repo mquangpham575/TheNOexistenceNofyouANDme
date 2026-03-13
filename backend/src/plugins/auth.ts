@@ -16,10 +16,14 @@ declare module "@fastify/jwt" {
 
 declare module "fastify" {
   interface FastifyInstance {
-    authenticate: (request: import("fastify").FastifyRequest, reply: import("fastify").FastifyReply) => Promise<void>;
+    authenticate: (
+      request: import("fastify").FastifyRequest,
+      reply: import("fastify").FastifyReply,
+    ) => Promise<void>;
   }
 }
 
+// Registers the JWT authentication plugin and sets up the authenticate decorator.
 export default fp(async (app) => {
   const secret = process.env.JWT_SECRET;
 
@@ -29,6 +33,7 @@ export default fp(async (app) => {
 
   await app.register(jwt, { secret });
 
+  // Decorates the app instance with an authenticate method to verify JWT tokens.
   app.decorate("authenticate", async (request, reply) => {
     try {
       await request.jwtVerify();

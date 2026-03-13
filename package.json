@@ -1,0 +1,39 @@
+{
+  "name": "nonexist",
+  "version": "1.0.0",
+  "description": "A \"non functional\" fan tribute to the game **The NOexistenceN of you AND me**, originally developed by **Nino Games** and **0x0Real Studio**.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepare": "husky"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mquangpham575/nonexist.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/mquangpham575/nonexist/issues"
+  },
+  "homepage": "https://github.com/mquangpham575/nonexist#readme",
+  "devDependencies": {
+    "husky": "^9.1.7",
+    "lint-staged": "^16.3.3",
+    "prettier": "^3.8.1"
+  },
+  "lint-staged": {
+    "backend/src/**/*.ts": [
+      "prettier --write"
+    ],
+    "frontend/src/**/*.{ts,tsx,js,jsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "**/*.{json,md,yml}": [
+      "prettier --write"
+    ]
+  }
+}
