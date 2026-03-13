@@ -38,6 +38,7 @@ jobs:
           identity-id: ${{ secrets.INFISICAL_IDENTITY_ID }}
           project-slug: nonexist
           env-slug: dev
+          domain: https://app.infisical.com
           export-type: env
 
       - name: Build
@@ -67,6 +68,7 @@ jobs:
           identity-id: ${{ secrets.INFISICAL_IDENTITY_ID }}
           project-slug: nonexist
           env-slug: dev
+          domain: https://app.infisical.com
           export-type: env
 
       - name: Build
