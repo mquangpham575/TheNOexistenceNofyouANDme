@@ -28,13 +28,14 @@ jobs:
         working-directory: frontend
         run: bun run lint
 
-      - name: Fetch secrets from Infisical
-        uses: Infisical/secrets-action@v1.0.12
-        with:
-          infisical-token: ${{ secrets.INFISICAL_TOKEN }}
-          domain: https://app.infisical.com
-          env-slug: dev
-          export-type: env
+      - name: Install Infisical CLI
+        run: |
+          curl -1sLf 'https://dl.cloudsmith.io/public/infisical/infisical-cli/setup.deb.sh' | sudo -E bash
+          sudo apt apt-get install -y infisical
+
+      - name: Fetch Secrets
+        run: infisical export --token=${{ secrets.INFISICAL_TOKEN }} --format=dotenv > .env
+        working-directory: frontend
 
       - name: Build
         working-directory: frontend
@@ -57,13 +58,14 @@ jobs:
         working-directory: backend
         run: bun install --frozen-lockfile
 
-      - name: Fetch secrets from Infisical
-        uses: Infisical/secrets-action@v1.0.12
-        with:
-          infisical-token: ${{ secrets.INFISICAL_TOKEN }}
-          domain: https://app.infisical.com
-          env-slug: dev
-          export-type: env
+      - name: Install Infisical CLI
+        run: |
+          curl -1sLf 'https://dl.cloudsmith.io/public/infisical/infisical-cli/setup.deb.sh' | sudo -E bash
+          sudo apt apt-get install -y infisical
+
+      - name: Fetch Secrets
+        run: infisical export --token=${{ secrets.INFISICAL_TOKEN }} --format=dotenv > .env
+        working-directory: backend
 
       - name: Build
         working-directory: backend
