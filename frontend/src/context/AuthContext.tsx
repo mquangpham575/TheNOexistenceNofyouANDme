@@ -24,15 +24,14 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(
+    () => !!localStorage.getItem("token"),
+  );
 
   // On mount, restore session from stored token
   useEffect(() => {
     const token = localStorage.getItem("token");
-    if (!token) {
-      setIsLoading(false);
-      return;
-    }
+    if (!token) return;
     api
       .me()
       .then(setUser)
