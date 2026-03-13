@@ -6,10 +6,6 @@ on:
   pull_request:
     branches: [main]
 
-permissions:
-  id-token: write
-  contents: read
-
 jobs:
   frontend:
     name: Frontend lint and build
@@ -32,17 +28,13 @@ jobs:
         working-directory: frontend
         run: bun run lint
 
-      - name: Debug OIDC Environment
-        run: echo "Current Repo is ${{ github.repository }} on ref ${{ github.ref }}"
-
       - name: Fetch secrets from Infisical
         uses: Infisical/secrets-action@v1.0.8
         with:
-          method: oidc
-          identity-id: ${{ secrets.INFISICAL_IDENTITY_ID }}
+          client-id: ${{ secrets.INFISICAL_CLIENT_ID }}
+          client-secret: ${{ secrets.INFISICAL_CLIENT_SECRET }}
           project-id: 0f95775c-a2eb-4730-88e7-172ba7fd3e82
           env-slug: dev
-          domain: https://app.infisical.com
           export-type: env
 
       - name: Build
@@ -66,17 +58,13 @@ jobs:
         working-directory: backend
         run: bun install --frozen-lockfile
 
-      - name: Debug OIDC Environment
-        run: echo "Current Repo is ${{ github.repository }} on ref ${{ github.ref }}"
-
       - name: Fetch secrets from Infisical
         uses: Infisical/secrets-action@v1.0.8
         with:
-          method: oidc
-          identity-id: ${{ secrets.INFISICAL_IDENTITY_ID }}
+          client-id: ${{ secrets.INFISICAL_CLIENT_ID }}
+          client-secret: ${{ secrets.INFISICAL_CLIENT_SECRET }}
           project-id: 0f95775c-a2eb-4730-88e7-172ba7fd3e82
           env-slug: dev
-          domain: https://app.infisical.com
           export-type: env
 
       - name: Build
