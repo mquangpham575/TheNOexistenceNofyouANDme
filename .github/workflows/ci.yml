@@ -35,6 +35,7 @@ jobs:
           client-secret: ${{ secrets.INFISICAL_CLIENT_SECRET }}
           project-id: 0f95775c-a2eb-4730-88e7-172ba7fd3e82
           env-slug: dev
+          domain: https://app.infisical.com
           export-type: env
 
       - name: Build
@@ -65,6 +66,7 @@ jobs:
           client-secret: ${{ secrets.INFISICAL_CLIENT_SECRET }}
           project-id: 0f95775c-a2eb-4730-88e7-172ba7fd3e82
           env-slug: dev
+          domain: https://app.infisical.com
           export-type: env
 
       - name: Build
