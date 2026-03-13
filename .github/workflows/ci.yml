@@ -31,11 +31,8 @@ jobs:
       - name: Fetch secrets from Infisical
         uses: Infisical/secrets-action@v1.0.8
         with:
-          client-id: ${{ secrets.INFISICAL_CLIENT_ID }}
-          client-secret: ${{ secrets.INFISICAL_CLIENT_SECRET }}
-          project-id: 0f95775c-a2eb-4730-88e7-172ba7fd3e82
+          infisical-token: ${{ secrets.INFISICAL_TOKEN }}
           env-slug: dev
-          domain: https://app.infisical.com
           export-type: env
 
       - name: Build
@@ -62,11 +59,8 @@ jobs:
       - name: Fetch secrets from Infisical
         uses: Infisical/secrets-action@v1.0.8
         with:
-          client-id: ${{ secrets.INFISICAL_CLIENT_ID }}
-          client-secret: ${{ secrets.INFISICAL_CLIENT_SECRET }}
-          project-id: 0f95775c-a2eb-4730-88e7-172ba7fd3e82
+          infisical-token: ${{ secrets.INFISICAL_TOKEN }}
           env-slug: dev
-          domain: https://app.infisical.com
           export-type: env
 
       - name: Build
