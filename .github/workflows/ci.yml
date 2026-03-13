@@ -31,7 +31,8 @@ jobs:
       - name: Fetch secrets from Infisical
         uses: Infisical/secrets-action@v1.0.8
         with:
-          infisical-token: ${{ secrets.INFISICAL_TOKEN }}
+          service-token: ${{ secrets.INFISICAL_TOKEN }}
+          domain: https://app.infisical.com
           env-slug: dev
           export-type: env
 
@@ -59,7 +60,8 @@ jobs:
       - name: Fetch secrets from Infisical
         uses: Infisical/secrets-action@v1.0.8
         with:
-          infisical-token: ${{ secrets.INFISICAL_TOKEN }}
+          service-token: ${{ secrets.INFISICAL_TOKEN }}
+          domain: https://app.infisical.com
           env-slug: dev
           export-type: env
 
