@@ -29,9 +29,9 @@ jobs:
         run: bun run lint
 
       - name: Fetch secrets from Infisical
-        uses: Infisical/secrets-action@v1.0.8
+        uses: Infisical/secrets-action@v1.0.12
         with:
-          service-token: ${{ secrets.INFISICAL_TOKEN }}
+          infisical-token: ${{ secrets.INFISICAL_TOKEN }}
           domain: https://app.infisical.com
           env-slug: dev
           export-type: env
@@ -58,9 +58,9 @@ jobs:
         run: bun install --frozen-lockfile
 
       - name: Fetch secrets from Infisical
-        uses: Infisical/secrets-action@v1.0.8
+        uses: Infisical/secrets-action@v1.0.12
         with:
-          service-token: ${{ secrets.INFISICAL_TOKEN }}
+          infisical-token: ${{ secrets.INFISICAL_TOKEN }}
           domain: https://app.infisical.com
           env-slug: dev
           export-type: env
