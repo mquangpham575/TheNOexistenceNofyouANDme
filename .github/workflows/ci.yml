@@ -35,9 +35,8 @@ jobs:
       - name: Fetch secrets from Infisical
         uses: Infisical/secrets-action@v1.0.8
         with:
-          authentication-method: oidc
           identity-id: ${{ secrets.INFISICAL_IDENTITY_ID }}
-          project-slug: nonexist
+          project-slug: TheNOexistenceNofyouANDme
           env-slug: dev
           domain: https://app.infisical.com
           export-type: env
@@ -66,9 +65,8 @@ jobs:
       - name: Fetch secrets from Infisical
         uses: Infisical/secrets-action@v1.0.8
         with:
-          authentication-method: oidc
           identity-id: ${{ secrets.INFISICAL_IDENTITY_ID }}
-          project-slug: nonexist
+          project-slug: TheNOexistenceNofyouANDme
           env-slug: dev
           domain: https://app.infisical.com
           export-type: env
