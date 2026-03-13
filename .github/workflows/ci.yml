@@ -37,7 +37,7 @@ jobs:
         with:
           method: oidc
           identity-id: ${{ secrets.INFISICAL_IDENTITY_ID }}
-          project-slug: nonexist
+          project-id: 0f95775c-a2eb-4730-88e7-172ba7fd3e82
           env-slug: dev
           domain: https://app.infisical.com
           export-type: env
@@ -68,7 +68,7 @@ jobs:
         with:
           method: oidc
           identity-id: ${{ secrets.INFISICAL_IDENTITY_ID }}
-          project-slug: nonexist
+          project-id: 0f95775c-a2eb-4730-88e7-172ba7fd3e82
           env-slug: dev
           domain: https://app.infisical.com
           export-type: env
