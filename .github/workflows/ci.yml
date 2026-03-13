@@ -35,8 +35,8 @@ jobs:
       - name: Fetch secrets from Infisical
         uses: Infisical/secrets-action@v1.0.8
         with:
-          identity-id: ${{ secrets.INFISICAL_IDENTITY_ID }}
-          project-slug: TheNOexistenceNofyouANDme
+          client-id: ${{ secrets.INFISICAL_IDENTITY_ID }}
+          project-slug: nonexist
           env-slug: dev
           domain: https://app.infisical.com
           export-type: env
@@ -65,8 +65,8 @@ jobs:
       - name: Fetch secrets from Infisical
         uses: Infisical/secrets-action@v1.0.8
         with:
-          identity-id: ${{ secrets.INFISICAL_IDENTITY_ID }}
-          project-slug: TheNOexistenceNofyouANDme
+          client-id: ${{ secrets.INFISICAL_IDENTITY_ID }}
+          project-slug: nonexist
           env-slug: dev
           domain: https://app.infisical.com
           export-type: env
