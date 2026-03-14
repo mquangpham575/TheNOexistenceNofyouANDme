@@ -11,6 +11,9 @@ permissions:
   id-token: write # Required for OIDC authentication
   contents: read # Required for checking out code
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   frontend:
     name: Frontend lint and build
