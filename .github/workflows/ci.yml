@@ -21,7 +21,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2
@@ -36,17 +36,15 @@ jobs:
         working-directory: frontend
         run: bun run lint
 
-      - name: Debug OIDC Environment
-        run: echo "Current Repo is ${{ github.repository }} on ref ${{ github.ref }}"
-
-      - name: Fetch secrets from Infisical
-        uses: Infisical/secrets-action@v1.0.9
+      - name: Secret fetch
+        uses: Infisical/secrets-action@v1.0.15
         with:
           method: oidc
           identity-id: 940ba67f-b200-4787-b2d2-4a1532e613fd
           domain: https://app.infisical.com
           project-slug: "nonexist-y1c-c"
           env-slug: dev
+          export-type: env
 
       - name: Build
         working-directory: frontend
@@ -58,7 +56,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2
@@ -69,17 +67,15 @@ jobs:
         working-directory: backend
         run: bun install --frozen-lockfile
 
-      - name: Debug OIDC Environment
-        run: echo "Current Repo is ${{ github.repository }} on ref ${{ github.ref }}"
-
-      - name: Fetch secrets from Infisical
-        uses: Infisical/secrets-action@v1.0.9
+      - name: Secret fetch
+        uses: Infisical/secrets-action@v1.0.15
         with:
           method: oidc
           identity-id: 940ba67f-b200-4787-b2d2-4a1532e613fd
           domain: https://app.infisical.com
           project-slug: "nonexist-y1c-c"
           env-slug: dev
+          export-type: env
 
       - name: Build
         working-directory: backend
@@ -91,10 +87,20 @@ jobs:
     needs: [frontend, backend]
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
+
+      - name: Secret fetch
+        uses: Infisical/secrets-action@v1.0.15
+        with:
+          method: oidc
+          identity-id: 940ba67f-b200-4787-b2d2-4a1532e613fd
+          domain: https://app.infisical.com
+          project-slug: "nonexist-y1c-c"
+          env-slug: dev
+          export-type: env
 
       - name: Build frontend image
         uses: docker/build-push-action@v6
