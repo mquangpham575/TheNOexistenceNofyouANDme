@@ -1,10 +1,15 @@
-name: CI
+name: Build and Push Docker Image
 
 on:
+  workflow_dispatch: # Manual trigger for testing
   push:
     branches: [main]
   pull_request:
     branches: [main]
+
+permissions:
+  id-token: write # Required for OIDC authentication
+  contents: read # Required for checking out code
 
 jobs:
   frontend:
@@ -28,14 +33,17 @@ jobs:
         working-directory: frontend
         run: bun run lint
 
-      - name: Install Infisical CLI
-        run: |
-          curl -1sLf 'https://artifacts-cli.infisical.com/setup.deb.sh' | sudo -E bash
-          sudo apt-get update && sudo apt-get install -y infisical
+      - name: Debug OIDC Environment
+        run: echo "Current Repo is ${{ github.repository }} on ref ${{ github.ref }}"
 
-      - name: Fetch Secrets
-        run: infisical export --token=${{ secrets.INFISICAL_TOKEN }} --format=dotenv > .env
-        working-directory: frontend
+      - name: Fetch secrets from Infisical
+        uses: Infisical/secrets-action@v1.0.9
+        with:
+          method: oidc
+          identity-id: 940ba67f-b200-4787-b2d2-4a1532e613fd
+          domain: https://app.infisical.com
+          project-slug: "nonexist-y1c-c"
+          env-slug: dev
 
       - name: Build
         working-directory: frontend
@@ -58,14 +66,17 @@ jobs:
         working-directory: backend
         run: bun install --frozen-lockfile
 
-      - name: Install Infisical CLI
-        run: |
-          curl -1sLf 'https://artifacts-cli.infisical.com/setup.deb.sh' | sudo -E bash
-          sudo apt-get update && sudo apt-get install -y infisical
+      - name: Debug OIDC Environment
+        run: echo "Current Repo is ${{ github.repository }} on ref ${{ github.ref }}"
 
-      - name: Fetch Secrets
-        run: infisical export --token=${{ secrets.INFISICAL_TOKEN }} --format=dotenv > .env
-        working-directory: backend
+      - name: Fetch secrets from Infisical
+        uses: Infisical/secrets-action@v1.0.9
+        with:
+          method: oidc
+          identity-id: 940ba67f-b200-4787-b2d2-4a1532e613fd
+          domain: https://app.infisical.com
+          project-slug: "nonexist-y1c-c"
+          env-slug: dev
 
       - name: Build
         working-directory: backend
