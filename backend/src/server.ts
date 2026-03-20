@@ -18,6 +18,8 @@ async function buildServer() {
   await app.register(authPlugin);
 
   app.get("/health", async () => ({ status: "ok" }));
+  // Added root route
+  app.get("/", async () => ({ status: "Backend is running on Northflank!" }));
 
   await app.register(authRoutes, { prefix: "/auth" });
   await app.register(profileRoutes, { prefix: "/profile" });
