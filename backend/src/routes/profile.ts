@@ -1,52 +1,53 @@
 import type { FastifyInstance } from "fastify";
-
-interface UpdateProfileBody {
-  displayName?: string;
-  avatarUrl?: string | null;
-  bio?: string | null;
-}
+import { z } from "zod";
+import type { ZodTypeProvider } from "fastify-type-provider-zod";
 
 export async function profileRoutes(app: FastifyInstance) {
-  app.get("/", { preHandler: [app.authenticate] }, async (request, reply) => {
-    const profile = await app.prisma.profile.findUnique({
-      where: { userId: request.user.userId },
-    });
+  const typedApp = app.withTypeProvider<ZodTypeProvider>();
 
-    if (!profile) {
-      return reply.code(404).send({ message: "Profile not found" });
-    }
-
-    return reply.send(profile);
-  });
-
-  app.patch<{ Body: UpdateProfileBody }>(
+  // [GET] /profile
+  typedApp.get(
     "/",
-    { preHandler: [app.authenticate] },
+    {
+      preHandler: [app.authenticate],
+      schema: {
+        tags: ["Profile"],
+        summary: "Get current profile",
+        security: [{ bearerAuth: [] }],
+      },
+    },
     async (request, reply) => {
-      const updates: UpdateProfileBody = {};
+      const profile = await app.prisma.profile.findUnique({
+        where: { userId: request.user.userId },
+      });
 
-      if (typeof request.body.displayName === "string") {
-        const value = request.body.displayName.trim();
-        if (value.length < 2 || value.length > 40) {
-          return reply
-            .code(400)
-            .send({
-              message: "displayName must be between 2 and 40 characters",
-            });
-        }
-        updates.displayName = value;
+      if (!profile) {
+        return reply.code(404).send({ message: "Profile not found" });
       }
 
-      if (
-        request.body.avatarUrl === null ||
-        typeof request.body.avatarUrl === "string"
-      ) {
-        updates.avatarUrl = request.body.avatarUrl;
-      }
+      return reply.send(profile);
+    },
+  );
 
-      if (request.body.bio === null || typeof request.body.bio === "string") {
-        updates.bio = request.body.bio;
-      }
+  // [PATCH] /profile
+  typedApp.patch(
+    "/",
+    {
+      preHandler: [app.authenticate],
+      schema: {
+        tags: ["Profile"],
+        summary: "Update current profile",
+        security: [{ bearerAuth: [] }],
+        body: z.object({
+          displayName: z.string().min(2).max(40).optional(),
+          avatarUrl: z.string().nullable().optional(),
+          bio: z.string().nullable().optional(),
+        }),
+      },
+    },
+    async (request, reply) => {
+      // The body is already validated and typed!
+      const updates = request.body;
 
       const profile = await app.prisma.profile.update({
         where: { userId: request.user.userId },
