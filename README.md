@@ -6,91 +6,90 @@ A "non functional" fan tribute to the game **The NOexistenceN of you AND me**, o
   <img src="frontend/assets/readme/readme_top_preview.png" alt="App Preview" />
 </div>
 
-## Features
+## ✨ Features
 
 - **Immersive Interface**: Custom main menu with hover animations and seamless transitions.
 - **Audio Integration**: Background music (OST) support with interactive playback controls.
 - **Visuals**: Animated backgrounds and planned 3D interactive book model integration.
-- **Modern Tech**: Built with React 19 and TypeScript for a robust, type-safe architecture.
-- **Smooth Animations**: fluid UI interactions powered by Framer Motion.
+- **Smooth Animations**: Fluid UI interactions powered by Framer Motion.
+- **Robust API**: Bulletproof Fastify backend with strictly validated environment variables and automated testing configurations.
 
-## Tech Stack
+## 🛠️ Tech Stack
 
-- **Framework**: [React 19](https://react.dev/) + [TypeScript](https://www.typescriptlang.org/)
-- **Build Tool**: [Vite](https://vitejs.dev/)
-- **Styling**: [Tailwind CSS v4](https://tailwindcss.com/)
-- **Animation**: [Framer Motion](https://www.framer.com/motion/)
-- **Icons**: [Lucide React](https://lucide.dev/)
+- **Frontend**: [React 19](https://react.dev/) + [Vite](https://vitejs.dev/) + [Tailwind CSS v4](https://tailwindcss.com/) + [Framer Motion](https://www.framer.com/motion/)
+- **Backend**: [Fastify](https://fastify.dev/) + [Zod](https://zod.dev/) + [ESLint](https://eslint.org/)
+- **Database**: [PostgreSQL (Supabase)](https://supabase.com/) + [Prisma ORM](https://www.prisma.io/)
+- **Tooling**: [Bun](https://bun.sh/) + [TypeScript](https://www.typescriptlang.org/) + [Concurrently](https://github.com/open-cli-tools/concurrently)
 
-## Prerequisites
+## 🚀 Getting Started
 
-Before you begin, ensure you have the following installed:
+Ensure you have **[Bun](https://bun.sh/)** installed on your system.
 
-- **Node.js**: v18 or higher (LTS recommended).
-- **Package Manager**: npm, yarn, or pnpm.
+### 1. Installation
 
-### Installation & Run
+Clone the repository and install all dependencies for both the frontend and backend in one shot:
 
-1. Clone the repository.
-2. Install dependencies:
-   ```bash
-   cd frontend
-   npm install
-   ```
-3. Start the development server:
-   ```bash
-   cd frontend
-   npm run dev
-   ```
+```bash
+bun install
+```
 
-## Backend (Step 1: Auth + Profiles)
+### 2. Environment Variables
 
-This repository now includes a backend API in `backend/` with:
+Navigate to the `backend/` directory and duplicate the example environment file:
 
-- JWT auth (`register`, `login`, `me`)
-- User profile fetch/update
-- PostgreSQL + Prisma ORM
+```bash
+cp backend/.env.example backend/.env
+```
 
-### Run Full Stack With Docker
+Open `backend/.env` and configure your variables (Zod will strictly validate these on startup!):
 
-From the project root:
+- `DATABASE_URL`: Your Supabase **Connection Pooler** string (Port 6543, includes `?pgbouncer=true`).
+- `DIRECT_URL`: Your Supabase **Direct Connection** string (Port 5432, used exclusively by Prisma for migrations).
+- `JWT_SECRET`: A secure random string for signing auth tokens.
+
+### 3. Database Migrations
+
+Push the Prisma schema to your Supabase database:
+
+```bash
+cd backend
+bun run db:push
+cd ..
+```
+
+### 4. Run the Full Stack Locally
+
+You no longer need multiple terminals! From the **root of the project**, simply run:
+
+```bash
+bun run dev
+```
+
+This will concurrently launch:
+
+- Frontend on `http://localhost:5173` (or next available)
+- Backend API on `http://localhost:4000`
+
+### Run Full Stack With Docker (Alternative)
 
 ```bash
 docker compose up -d --build
 ```
 
-Services:
+_Note: Make sure your local Postgres container is running if you aren't using Supabase._
 
-- Frontend: `http://localhost:3000`
-- Backend API: `http://localhost:4000`
-- Postgres: `localhost:5432`
-
-The frontend Nginx is configured to proxy `http://localhost:3000/api/*` to the backend.
-
-### API Endpoints
+## 🔌 API Endpoints
 
 - `POST /auth/register`
   - body: `{ "email": "user@example.com", "password": "password123", "displayName": "Player" }`
 - `POST /auth/login`
   - body: `{ "email": "user@example.com", "password": "password123" }`
-- `GET /auth/me`
-  - auth: `Authorization: Bearer <token>`
-- `GET /profile`
-  - auth: `Authorization: Bearer <token>`
-- `PATCH /profile`
-  - auth: `Authorization: Bearer <token>`
+- `GET /auth/me` (Header `Authorization: Bearer <token>`)
+- `GET /profile` (Header `Authorization: Bearer <token>`)
+- `PATCH /profile` (Header `Authorization: Bearer <token>`)
   - body example: `{ "displayName": "New Name", "bio": "...", "avatarUrl": null }`
 
-### Run Backend Alone (Optional)
-
-```bash
-cd backend
-npm install
-npm run db:push
-npm run dev
-```
-
-## Roadmap
+## 🗺️ Roadmap
 
 - [x] 1st page - Main menu: (should be done)
 - [ ] 2nd page - Continue (VN like book-note of Lilth):
@@ -100,7 +99,7 @@ npm run dev
 - [ ] Backers: Credits.
 - [x] Exit: Exit Screen with and voice lines.
 
-## Disclaimer
+## ⚠️ Disclaimer
 
 This is a non-profit fan project. I do not own the rights to the original game. All credit for the concept, characters, and assets goes to Nino Games and 0x0Real Studio. Please don't sue me; I'm just a fan with a text editor and a dream.
 

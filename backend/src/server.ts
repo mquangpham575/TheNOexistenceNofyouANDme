@@ -5,12 +5,13 @@ import prismaPlugin from "./plugins/prisma.js";
 import authPlugin from "./plugins/auth.js";
 import { authRoutes } from "./routes/auth.js";
 import { profileRoutes } from "./routes/profile.js";
+import { env } from "./env.js"; // validate and access env vars
 
 async function buildServer() {
   const app = Fastify({ logger: true });
 
   await app.register(cors, {
-    origin: process.env.FRONTEND_ORIGIN || "http://localhost:3000",
+    origin: env.FRONTEND_ORIGIN,
     credentials: true,
   });
 
@@ -28,7 +29,7 @@ async function buildServer() {
 }
 
 async function start() {
-  const port = Number(process.env.PORT || 4000);
+  const port = Number(env.PORT);
   const app = await buildServer();
 
   try {

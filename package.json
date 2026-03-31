@@ -4,6 +4,9 @@
   "description": "A \"non functional\" fan tribute to the game **The NOexistenceN of you AND me**, originally developed by **Nino Games** and **0x0Real Studio**.",
   "main": "index.js",
   "scripts": {
+    "dev": "concurrently \"bun run dev:frontend\" \"bun run dev:backend\"",
+    "dev:frontend": "cd frontend && bun run dev",
+    "dev:backend": "cd backend && bun run dev",
     "test": "echo \"Error: no test specified\" && exit 1",
     "prepare": "husky"
   },
@@ -20,16 +23,18 @@
   },
   "homepage": "https://github.com/mquangpham575/nonexist#readme",
   "devDependencies": {
+    "concurrently": "^9.2.1",
     "husky": "^9.1.7",
     "lint-staged": "^16.3.3",
     "prettier": "^3.8.1"
   },
   "lint-staged": {
     "backend/src/**/*.ts": [
+      "bun run --cwd=backend eslint --fix",
       "prettier --write"
     ],
     "frontend/src/**/*.{ts,tsx,js,jsx}": [
-      "eslint --fix",
+      "bun run --cwd=frontend eslint --fix",
       "prettier --write"
     ],
     "**/*.{json,md,yml}": [
